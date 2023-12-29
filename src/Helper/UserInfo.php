@@ -13,6 +13,29 @@ class UserInfo {
         $this->connection = $connection;
 
     }
+
+    public function getUsers() {
+
+        $message = "";
+
+        try {
+
+            $stmt = $this->connection->prepare("SELECT * FROM users");
+            $stmt->execute([]);
+
+            $users = $stmt->fetchAll($this->connection::FETCH_ASSOC);
+
+            return $users;
+
+        } catch (\PDOException $e) {
+
+            $message = "Database error: {$e->getMessage()}";
+
+        }
+
+        return $message;
+
+    }
     
     public function getUserId(string $email) {
 
@@ -29,7 +52,7 @@ class UserInfo {
 
         } catch (\PDOException $e) {
 
-            $message = "Databse error: {$e->getMessage()}";
+            $message = "Database error: {$e->getMessage()}";
 
         }
 
@@ -43,7 +66,7 @@ class UserInfo {
 
         try {
 
-            $stmt = $this->connection->prepare("SELECT * FROM users WHERE id = ?");
+            $stmt = $this->connection->prepare("SELECT balance FROM users WHERE id = ?");
             $stmt->execute([$user_id]);
 
             $user = $stmt->fetch($this->connection::FETCH_ASSOC);
@@ -52,7 +75,7 @@ class UserInfo {
 
         } catch (\PDOException $e) {
 
-            $message = "Databse error: {$e->getMessage()}";
+            $message = "Database error: {$e->getMessage()}";
 
         }
 

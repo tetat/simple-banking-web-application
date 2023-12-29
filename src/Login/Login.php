@@ -32,7 +32,9 @@ class Login {
             $user = $stmt->fetch($connection::FETCH_ASSOC);
 
             if ($user && password_verify($this->password, $user['password'])) {
+                // unset($user['email']);
                 unset($user['password']);
+                unset($user['role']);
                 return $user;
             } else {
                 $message = "Sorry, wrong credentials";
@@ -50,5 +52,5 @@ class Login {
 
 }
 
-$log = new Login(["email" => "n@gmail.com", "password" => "ab",]);
-print_r($log->login());
+// $log = new Login(["email" => "n@gmail.com", "password" => "ab",]);
+// print_r($log->login());
