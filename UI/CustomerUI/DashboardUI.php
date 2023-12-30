@@ -25,7 +25,7 @@ $id = $_SESSION['user_id'];
 $name = $_SESSION['user_name'];
 $email = $userInfo->getUserEmail($id);
 
-$transfers = $transferInfo->getMyTransfers($id);
+$transfers = $transferInfo->getUserTransfers($id);
 // print_r($transfers);
 
 

@@ -20,8 +20,8 @@ class UserInfo {
 
         try {
 
-            $stmt = $this->connection->prepare("SELECT * FROM users");
-            $stmt->execute([]);
+            $stmt = $this->connection->prepare("SELECT * FROM users WHERE role = ?");
+            $stmt->execute(["customer"]);
 
             $users = $stmt->fetchAll($this->connection::FETCH_ASSOC);
 

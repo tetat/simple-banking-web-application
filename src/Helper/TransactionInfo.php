@@ -14,7 +14,7 @@ class TransactionInfo {
 
     }
 
-    public function getMyTransfers(int $user_id) {
+    public function getUserTransfers(int $user_id) {
 
         $message = "";
 
@@ -26,6 +26,29 @@ class TransactionInfo {
             $transfers = $stmt->fetchAll($this->connection::FETCH_ASSOC);
 
             return $transfers;
+
+        } catch (\PDOException $e) {
+
+            $message = "Database error: {$e->getMessage()}";
+
+        }
+
+        return $message;
+
+    }
+
+    public function getAllTransactions() {
+
+        $message = "";
+
+        try {
+
+            $stmt = $this->connection->prepare("SELECT * FROM transactions");
+            $stmt->execute();
+
+            $transactions = $stmt->fetchAll($this->connection::FETCH_ASSOC);
+
+            return $transactions;
 
         } catch (\PDOException $e) {
 

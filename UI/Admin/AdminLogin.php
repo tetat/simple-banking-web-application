@@ -8,6 +8,7 @@ use App\Login\Login;
 session_start();
 
 if (isset($_SESSION['user_role'])) {
+
     if ($_SESSION['user_role'] === "customer") {
       header("Location:../CustomerUI/DashboardUI.php");
     } else {
@@ -32,7 +33,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
       $_SESSION['user_name'] = $result['name'];
       $_SESSION['user_role'] = $result['role'];
 
-      header("Location:../CustomerUI/DashboardUI.php");
+      header("Location:Customers.php");
       exit;
   
     } else {
@@ -89,7 +90,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
       <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <h2
           class="mt-6 text-2xl font-bold leading-9 tracking-tight text-center text-gray-900">
-          Sign In To Your Account
+          Sign In To Your Admin Account
         </h2>
       </div>
 
@@ -146,7 +147,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         <p class="mt-10 text-sm text-center text-gray-500">
           Don't have an account?
           <a
-            href="./RegisterUI.php"
+            href="./AdminRegister.php"
             class="font-semibold leading-6 text-emerald-600 hover:text-emerald-500"
             >Register</a
           >
