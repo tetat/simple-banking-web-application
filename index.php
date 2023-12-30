@@ -1,3 +1,19 @@
+<?php
+
+session_start();
+
+if (isset($_SESSION['user_id'])) {
+
+  header("Location:UI/CustomerUI/DashboardUI.php");
+  exit;
+
+}
+// print_r($_SESSION);
+
+?>
+
+
+
 <!DOCTYPE html>
 <html
   class="h-full bg-white"

@@ -2,13 +2,13 @@
 
 namespace App\Withdraw;
 
-require_once __DIR__ . "/../DB/CreateConnection.php";
-require_once __DIR__ . "/../Helper/UserInfo.php";
+// require_once __DIR__ . "/../DB/CreateConnection.php";
+// require_once __DIR__ . "/../Helper/UserInfo.php";
 require_once __DIR__ . "/../Helper/UpdateBalance.php";
 
-use App\DB\CreateConnection;
+// use App\DB\CreateConnection;
 use App\Helper\UpdateBalance;
-use App\Helper\UserInfo;
+// use App\Helper\UserInfo;
 
 use PDO;
 
@@ -22,14 +22,14 @@ class Withdraw {
     private string $email;
     private PDO $connection;
 
-    public function __construct(string $email, int $amount) {
+    public function __construct(array $withdrawInfo) {
 
-        $this->email = htmlspecialchars($email);
-        $this->connection = (new CreateConnection())->createConnection();
+        $this->email = htmlspecialchars($withdrawInfo['email']);
+        $this->connection = $withdrawInfo['connection'];
 
-        $this->user_id = (new UserInfo($this->connection))->getUserId($this->email);
+        $this->user_id = $withdrawInfo['id'];
         $this->type = "Withdraw";
-        $this->amount = $amount;
+        $this->amount = $withdrawInfo['amount'];
         $this->date = date("d/m/Y h:i:s");
 
     }

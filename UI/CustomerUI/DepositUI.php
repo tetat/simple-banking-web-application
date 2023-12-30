@@ -20,10 +20,13 @@ $id = $_SESSION['user_id'];
 $name = $_SESSION['user_name'];
 $email = $_SESSION['user_email'];
 
+$connection = (new CreateConnection())->createConnection();
+$userInfo = new UserInfo($connection);
+
 if (isset($_POST['amount'])) {
 
-  $deposit = array("id" => $id, "email" => $email, "amount" => $_POST['amount']);
-  $message = (new Deposit($deposit))->deposit();
+  $depositInfo = array("id" => $id, "email" => $email, "amount" => $_POST['amount'], "connection" => $connection);
+  $message = (new Deposit($depositInfo))->deposit();
 
   if ($message === "success") {
 
@@ -36,11 +39,6 @@ if (isset($_POST['amount'])) {
 
   }
 }
-
-
-$connection = (new CreateConnection())->createConnection();
-
-$userInfo = new UserInfo($connection);
 
 ?>
 
@@ -315,7 +313,7 @@ $userInfo = new UserInfo($connection);
                 </dt>
                 <dd
                   class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
-                  <?=$userInfo->getUserBalance($id)?>
+                  $<?=$userInfo->getUserBalance($id)?>
                 </dd>
               </div>
             </dl>

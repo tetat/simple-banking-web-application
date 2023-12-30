@@ -2,13 +2,13 @@
 
 namespace App\Withdraw;
 
-require_once __DIR__ . "/../DB/CreateConnection.php";
-require_once __DIR__ . "/../Helper/UserInfo.php";
+// require_once __DIR__ . "/../DB/CreateConnection.php";
+// require_once __DIR__ . "/../Helper/UserInfo.php";
 require_once __DIR__ . "/../Helper/UpdateBalance.php";
 
-use App\DB\CreateConnection;
+// use App\DB\CreateConnection;
 use App\Helper\UpdateBalance;
-use App\Helper\UserInfo;
+// use App\Helper\UserInfo;
 
 use PDO;
 
@@ -24,16 +24,16 @@ class Transfer {
     private string $email;
     private PDO $connection;
 
-    public function __construct(string $email, string $recipient_name, string $recipient_email, int $amount) {
+    public function __construct(array $transferInfo) {
 
-        $this->email = htmlspecialchars($email);
-        $this->connection = (new CreateConnection())->createConnection();
+        $this->email = htmlspecialchars($transferInfo['email']);
+        $this->connection = $transferInfo['connection'];
 
-        $this->user_id = (new UserInfo($this->connection))->getUserId($this->email);
-        $this->recipient_name = htmlspecialchars($recipient_name);
-        $this->recipient_email = htmlspecialchars($recipient_email);
-        $this->recipient_id = (new UserInfo($this->connection))->getUserId($this->recipient_email);
-        $this->amount = $amount;
+        $this->user_id = $transferInfo['id'];
+        $this->recipient_id = $transferInfo['recipient_id'];
+        $this->recipient_name = $transferInfo['recipient_name'];
+        $this->recipient_email = $transferInfo['recipient_email'];
+        $this->amount = $transferInfo['amount'];
         $this->date = date("d/m/Y h:i:s");
 
     }
@@ -73,5 +73,5 @@ class Transfer {
 
 }
 
-$trn = new Transfer("solim@gmail.com", "solim", "n@gmail.com", 20);
-echo $trn->transfer();
+// $trn = new Transfer("solim@gmail.com", "solim", "n@gmail.com", 20);
+// echo $trn->transfer();

@@ -2,11 +2,11 @@
 
 namespace App\Deposit;
 
-require_once __DIR__ . "/../DB/CreateConnection.php";
+// require_once __DIR__ . "/../DB/CreateConnection.php";
 // require_once __DIR__ . "/../Helper/UserInfo.php";
 require_once __DIR__ . "/../Helper/UpdateBalance.php";
 
-use App\DB\CreateConnection;
+// use App\DB\CreateConnection;
 use App\Helper\UpdateBalance;
 // use App\Helper\UserInfo;
 
@@ -22,14 +22,14 @@ class Deposit {
     private string $email;
     private PDO $connection;
 
-    public function __construct(array $deposit) {
+    public function __construct(array $depositInfo) {
 
-        $this->email = htmlspecialchars($deposit['email']);
-        $this->connection = (new CreateConnection())->createConnection();
+        $this->email = htmlspecialchars($depositInfo['email']);
+        $this->connection = $depositInfo['connection'];
 
-        $this->user_id = $deposit['id'];
+        $this->user_id = $depositInfo['id'];
         $this->type = "Deposit";
-        $this->amount = $deposit['amount'];
+        $this->amount = $depositInfo['amount'];
         $this->date = date("d/m/Y h:i:s");
 
     }

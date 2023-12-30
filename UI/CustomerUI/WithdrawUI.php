@@ -1,3 +1,50 @@
+<?php
+
+require_once __DIR__ . "/../../src/DB/CreateConnection.php";
+require_once __DIR__ . "/../../src/Helper/UserInfo.php";
+
+use App\DB\CreateConnection;
+use App\Helper\UserInfo;
+use App\Withdraw\Withdraw;
+
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+
+  header("Location:../Auth/LoginUI.php");
+  exit;
+
+}
+
+$id = $_SESSION['user_id'];
+$name = $_SESSION['user_name'];
+$email = $_SESSION['user_email'];
+
+
+$connection = (new CreateConnection())->createConnection();
+$userInfo = new UserInfo($connection);
+
+if (isset($_POST['amount'])) {
+
+  $withdrawInfo = array("id" => $id, "email" => $email, "amount" => $_POST['amount'], "connection" => $connection);
+  $message = (new Withdraw($withdrawInfo))->withdraw();
+
+  if ($message === "success") {
+
+    header("Location:DashboardUI.php");
+    exit;
+
+  } else {
+
+    echo $message;
+
+  }
+}
+
+?>
+
+
+
 <!DOCTYPE html>
 <html
   class="h-full bg-gray-100"
@@ -111,7 +158,7 @@
                     aria-labelledby="user-menu-button"
                     tabindex="-1">
                     <a
-                      href="#"
+                      href="../Auth/Logout.php"
                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       role="menuitem"
                       tabindex="-1"
@@ -212,10 +259,10 @@
                 </div>
                 <div class="ml-3">
                   <div class="text-base font-medium text-white">
-                    Ahmed Shamim
+                    <?=$name?>
                   </div>
                   <div class="text-sm font-medium text-emerald-300">
-                    ahmed@shamim.com
+                    <?=$email?>
                   </div>
                 </div>
                 <button
@@ -238,7 +285,7 @@
               </div>
               <div class="mt-3 space-y-1 px-2">
                 <a
-                  href="#"
+                  href="../Auth/Logout.php"
                   class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-emerald-500 hover:bg-opacity-75"
                   >Sign out</a
                 >
@@ -268,7 +315,7 @@
                 </dt>
                 <dd
                   class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
-                  $10,115,091.00
+                  $<?=$userInfo->getUserBalance($id)?>
                 </dd>
               </div>
             </dl>

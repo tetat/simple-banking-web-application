@@ -83,4 +83,27 @@ class UserInfo {
 
     }
 
+    public function getUserName(int $user_id) {
+
+        $message = "";
+
+        try {
+
+            $stmt = $this->connection->prepare("SELECT name FROM users WHERE id = ?");
+            $stmt->execute([$user_id]);
+
+            $user = $stmt->fetch($this->connection::FETCH_ASSOC);
+
+            return $user['name'];
+
+        } catch (\PDOException $e) {
+
+            $message = "Database error: {$e->getMessage()}";
+
+        }
+
+        return $message;
+
+    }
+
 }
