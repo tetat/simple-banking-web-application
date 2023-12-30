@@ -26,7 +26,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 
       $_SESSION['user_id'] = $result['id'];
       $_SESSION['user_name'] = $result['name'];
-      $_SESSION['user_email'] = $result['email'];
+      $_SESSION['user_role'] = $result['role'];
 
       header("Location:../CustomerUI/DashboardUI.php");
       exit;
