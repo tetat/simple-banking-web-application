@@ -13,7 +13,7 @@ trait CreateTable {
             $connection = (new CreateConnection())->createConnection();
             $connection->exec($sql);
 
-            return "Table Create Successfully.";
+            return "success";
 
         } catch (\PDOException $e) {
 

@@ -20,7 +20,9 @@ class TransferTable {
             date VARCHAR(100)
         )";
 
-        echo $this->createTable($moneyTransferTableSql);
+        $result = $this->createTable($moneyTransferTableSql);
+
+        return $result;
     }
 
 }

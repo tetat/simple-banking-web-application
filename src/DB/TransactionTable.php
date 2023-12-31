@@ -19,7 +19,9 @@ class TransationTable {
             date VARCHAR(100)
         )";
 
-        echo $this->createTable($transactionsTableSql);
+        $result = $this->createTable($transactionsTableSql);
+
+        return $result;
     }
 
 }

@@ -18,7 +18,9 @@ class UserTable {
             balance FLOAT(11,2)
         )";
 
-        echo $this->createTable($userTableSql);
+        $result = $this->createTable($userTableSql);
+
+        return $result;
     }
 
 }

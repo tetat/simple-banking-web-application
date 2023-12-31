@@ -3,6 +3,9 @@
 namespace App\Withdraw;
 
 require_once __DIR__ . "/../Helper/UpdateBalance.php";
+require_once __DIR__ . "/../DB/TransactionTable.php";
+
+use App\DB\TransationTable;
 use App\Helper\UpdateBalance;
 
 use PDO;
@@ -30,6 +33,10 @@ class Withdraw {
     }
 
     public function withdraw() {
+
+        $message = (new TransationTable())->createTransactionTable();
+
+        if ($message !== "success") return $message;
 
         $message = "";
 

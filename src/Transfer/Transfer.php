@@ -3,6 +3,8 @@
 namespace App\Withdraw;
 
 require_once __DIR__ . "/../Helper/UpdateBalance.php";
+
+use App\DB\TransferTable;
 use App\Helper\UpdateBalance;
 
 use PDO;
@@ -34,6 +36,10 @@ class Transfer {
     }
 
     public function transfer() {
+
+        $message = (new TransferTable())->createTransferTable();
+
+        if ($message !== "success") return $message;
 
         $message = "";
 

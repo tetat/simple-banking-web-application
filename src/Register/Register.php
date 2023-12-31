@@ -4,6 +4,7 @@ namespace App\Register;
 
 require_once __DIR__ . "/../DB/CreateConnection.php";
 use App\DB\CreateConnection;
+use App\DB\UserTable;
 
 class Register {
 
@@ -24,6 +25,10 @@ class Register {
     }
 
     public function register() {
+
+        $message = (new UserTable())->createUserTable();
+
+        if ($message !== "success") return $message;
 
         $message = "";
 
