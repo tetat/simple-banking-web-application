@@ -2,7 +2,7 @@
 
 This is a simple banking application with features for both 'Admin' and 'Customer' users.
 
-### UI Creadit
+### UI Credit
 
 UI Code:
 
