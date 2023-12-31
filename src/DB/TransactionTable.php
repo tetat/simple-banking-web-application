@@ -23,5 +23,3 @@ class TransationTable {
     }
 
 }
-
-// (new TransationTable())->createTransactionTable();

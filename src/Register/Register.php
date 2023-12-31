@@ -3,7 +3,6 @@
 namespace App\Register;
 
 require_once __DIR__ . "/../DB/CreateConnection.php";
-
 use App\DB\CreateConnection;
 
 class Register {
@@ -48,6 +47,3 @@ class Register {
     }
 
 }
-
-// $reg = new Register(["name" => "solim", "email" => "solim@gmail.com", "password" => "ab", "role" => "customer"]);
-// echo $reg->register();

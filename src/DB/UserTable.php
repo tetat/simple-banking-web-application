@@ -2,7 +2,6 @@
 
 namespace App\DB;
 
-// use App\DB\CreateTable;
 require __DIR__ . "/CreateTable.php";
 
 class UserTable {
@@ -23,5 +22,3 @@ class UserTable {
     }
 
 }
-
-// (new UserTable())->createUserTable();

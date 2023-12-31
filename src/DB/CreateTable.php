@@ -2,7 +2,6 @@
 
 namespace App\DB;
 
-// use App\DB\CreateConnection;
 require_once __DIR__ . "/CreateConnection.php";
 
 trait CreateTable {

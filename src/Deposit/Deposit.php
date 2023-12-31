@@ -2,13 +2,8 @@
 
 namespace App\Deposit;
 
-// require_once __DIR__ . "/../DB/CreateConnection.php";
-// require_once __DIR__ . "/../Helper/UserInfo.php";
 require_once __DIR__ . "/../Helper/UpdateBalance.php";
-
-// use App\DB\CreateConnection;
 use App\Helper\UpdateBalance;
-// use App\Helper\UserInfo;
 
 use PDO;
 
@@ -65,6 +60,3 @@ class Deposit {
 
     }
 }
-
-// $dep = new Deposit("solim@gmail.com", 130);
-// echo $dep->deposit();

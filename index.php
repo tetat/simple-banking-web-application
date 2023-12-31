@@ -2,13 +2,17 @@
 
 session_start();
 
-if (isset($_SESSION['user_id'])) {
+if (isset($_SESSION['user_role'])) {
 
-  header("Location:UI/CustomerUI/DashboardUI.php");
-  exit;
+  if ($_SESSION['user_role'] === "customer") {
+      header("Location:UI/CustomerUI/DashboardUI.php");
+  } else {
+      header("Location:UI/Admin/Customers.php");
+  }
+
+exit;
 
 }
-// print_r($_SESSION);
 
 ?>
 
@@ -19,48 +23,22 @@ if (isset($_SESSION['user_id'])) {
   class="h-full bg-white"
   lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com" />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-      rel="stylesheet" />
-
-    <style>
-      * {
-        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
-          'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
-          'Helvetica Neue', sans-serif;
-      }
-    </style>
+    <!-- Head section -->
+    <?php require("./UI/Common/Head.html") ?>
 
 
-    <title>Bangubank</title>
+    <title>Simple Banking</title>
   </head>
   <body class="flex flex-col items-baseline justify-center min-h-screen">
     <section
       class="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-12">
       <h1
-        class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
-        BanguBank
+        class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl">
+        Simple Banking Web Application
       </h1>
       <p
         class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48">
-        BanguBank is a simple banking application with features for both 'Admin'
-        and 'Customer' users. It's a HTML template starter pack for students of
-        <span class="font-semibold"
-          >Laravel Career Path by Interactive Cares</span
-        >.
+          This is a simple banking application with features for both 'Admin' and 'Customer' users.
       </p>
       <div
         class="flex flex-col gap-2 mb-8 lg:mb-16 md:flex-row md:justify-center">

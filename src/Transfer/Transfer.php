@@ -2,13 +2,8 @@
 
 namespace App\Withdraw;
 
-// require_once __DIR__ . "/../DB/CreateConnection.php";
-// require_once __DIR__ . "/../Helper/UserInfo.php";
 require_once __DIR__ . "/../Helper/UpdateBalance.php";
-
-// use App\DB\CreateConnection;
 use App\Helper\UpdateBalance;
-// use App\Helper\UserInfo;
 
 use PDO;
 
@@ -72,6 +67,3 @@ class Transfer {
     }
 
 }
-
-// $trn = new Transfer("solim@gmail.com", "solim", "n@gmail.com", 20);
-// echo $trn->transfer();

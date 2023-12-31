@@ -47,5 +47,3 @@ class CreateConnection {
     }
 
 }
-
-// (new CreateConnection())->createConnection();
