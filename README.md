@@ -10,6 +10,8 @@ UI Code:
 https://github.com/alnahian2003/bangubank.git
 ```
 
+## Screenshots
+
 ![Admin Dashboard](UI/Screenshots/AdminDashboard.png)
 
 ![Customer Dashboard](UI/Screenshots/CustomerDashboard.png)
@@ -32,14 +34,8 @@ https://github.com/alnahian2003/bangubank.git
 
 ### To Start
 
-Customer Section:
+Clone the repository to your local machine:
 
 ```bash
-php index.php
-```
-
-Admin Section:
-
-```bash
-php Admin.php
+git clone https://github.com/tetat/simple-banking-web-application
 ```
