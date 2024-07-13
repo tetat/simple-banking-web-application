@@ -2,20 +2,6 @@
 
 This is a simple banking application with features for both 'Admin' and 'Customer' users.
 
-### UI Credit
-
-UI Code:
-
-```bash
-https://github.com/alnahian2003/bangubank.git
-```
-
-## Screenshots
-
-![Admin Dashboard](UI/Screenshots/AdminDashboard.png)
-
-![Customer Dashboard](UI/Screenshots/CustomerDashboard.png)
-
 ## Admin Features
 
 - See all transactions made by all users.
@@ -37,5 +23,11 @@ https://github.com/alnahian2003/bangubank.git
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/tetat/simple-banking-web-application
+git clone https://github.com/tetat/simple-banking-web-application/tree/bank2
+```
+
+### UI Credit
+
+```bash
+https://github.com/alnahian2003/bangubank
 ```
