@@ -1,9 +1,3 @@
-<?php
-
-$title = "Withdraw Balance";
-
-?>
-
 <!DOCTYPE html>
 <html
   class="h-full bg-gray-100"
@@ -17,7 +11,7 @@ $title = "Withdraw Balance";
       <div class="bg-emerald-600 pb-32">
         
         <!-- Navigation -->
-        <?php include(__DIR__ . "/../layouts/navbar.php") ?>
+        <?php include(__DIR__ . "/../layouts/customer-navbar.php") ?>
 
         <header class="py-10">
           <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -41,7 +35,7 @@ $title = "Withdraw Balance";
                 </dt>
                 <dd
                   class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
-                  $10,115,091.00
+                  $<?= $balance ?>
                 </dd>
               </div>
             </dl>

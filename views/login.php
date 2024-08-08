@@ -1,6 +1,6 @@
 <?php
 
-$title = "Bangubank - Login";
+$title = "Login - Bangubank";
 
 ?>
 
@@ -24,10 +24,20 @@ $title = "Bangubank - Login";
 
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
         <div class="px-6 py-12 bg-white shadow sm:rounded-lg sm:px-12">
+          
+          <?php if ($success): ?>
+            <p class="text-lg text-green-700 bg-gray-200 p-2 rounded font-bold"><?= $success ?></p>
+          <?php endif ?>
+
+          <?php if (isset($errors["auth"])): ?>
+            <p class="text-xl text-red-700 bg-gray-200 p-2 rounded font-bold"><?= $errors["auth"] ?></p>
+          <?php endif ?>
+
           <form
             class="space-y-6"
-            action="#"
-            method="POST">
+            action="/login/store"
+            method="POST"
+            novalidate>
             <div>
               <label
                 for="email"
@@ -40,9 +50,14 @@ $title = "Bangubank - Login";
                   name="email"
                   type="email"
                   autocomplete="email"
+                  value="<?= old('email') ?>"
                   required
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 p-2 sm:text-sm sm:leading-6" />
               </div>
+
+              <?php if (isset($errors["email"])): ?>
+                <p class="text-sm text-red-700 p-2 rounded font-bold"><?= $errors["email"] ?></p>
+              <?php endif ?>
             </div>
 
             <div>
@@ -60,6 +75,10 @@ $title = "Bangubank - Login";
                   required
                   class="block w-full p-2 text-gray-900 border-0 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6" />
               </div>
+
+              <?php if (isset($errors["password"])): ?>
+                <p class="text-sm text-red-700 p-2 rounded font-bold"><?= $errors["password"] ?></p>
+              <?php endif ?>
             </div>
 
             <div>
@@ -71,11 +90,11 @@ $title = "Bangubank - Login";
             </div>
           </form>
         </div>
-
+        
         <p class="mt-10 text-sm text-center text-gray-500">
           Don't have an account?
           <a
-            href="./register.html"
+            href="/register/create"
             class="font-semibold leading-6 text-emerald-600 hover:text-emerald-500"
             >Register</a
           >

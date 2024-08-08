@@ -17,7 +17,7 @@ $title = "All Customers";
       <div class="pb-32 bg-sky-600">
         
         <!-- Navigation -->
-        <?php include(__DIR__ . "/../layouts/navbar.php") ?>
+        <?php include(__DIR__ . "/../layouts/admin-navbar.php") ?>
 
         <header class="py-10">
           <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">

@@ -1,0 +1,14 @@
+[
+    {
+        "handle": "nishat",
+        "balance": 100
+    },
+    {
+        "handle": "barshon",
+        "balance": 30
+    },
+    {
+        "handle": "solim",
+        "balance": 80
+    }
+]

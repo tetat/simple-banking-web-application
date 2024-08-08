@@ -1,9 +1,3 @@
-<?php
-
-$title = "Transfer Balance";
-
-?>
-
 <!DOCTYPE html>
 <html
   class="h-full bg-gray-100"
@@ -17,7 +11,7 @@ $title = "Transfer Balance";
       <div class="bg-emerald-600 pb-32">
         
         <!-- Navigation -->
-        <?php include(__DIR__ . "/../layouts/navbar.php") ?>
+        <?php include(__DIR__ . "/../layouts/customer-navbar.php") ?>
 
         <header class="py-10">
           <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -31,6 +25,14 @@ $title = "Transfer Balance";
       <main class="-mt-32">
         <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
           <div class="bg-white rounded-lg p-2">
+
+            <?php foreach($errors as $key => $value): ?>
+              <p class="text-sm text-red-700 p-2 rounded font-bold"><?= $value ?></p>
+            <?php endforeach ?>
+            <?php if ($success): ?>
+              <p class="text-lg text-green-700 bg-gray-200 p-2 rounded font-bold"><?= $success ?></p>
+            <?php endif ?>
+            
             <!-- Current Balance Stat -->
             <dl
               class="mx-auto grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
@@ -41,7 +43,7 @@ $title = "Transfer Balance";
                 </dt>
                 <dd
                   class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
-                  $10,115,091.00
+                  $<?= $balance ?>
                 </dd>
               </div>
             </dl>
@@ -52,8 +54,9 @@ $title = "Transfer Balance";
               <div class="px-4 py-5 sm:p-6">
                 <div class="mt-4 text-sm text-gray-500">
                   <form
-                    action="#"
-                    method="POST">
+                    action="/customer/transfer"
+                    method="POST"
+                    novalidate>
                     <!-- Recipient's Email Input -->
                     <input
                       type="email"

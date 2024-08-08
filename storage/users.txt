@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Nishat Miah",
+        "email": "nishat@google.com",
+        "password": "$2y$10$Q75gAkiyRTvaOLdagRF0JOM7mImle73aJ2h\/A78zDuk76YpYgvcDy",
+        "handle": "nishat",
+        "role": "customer"
+    },
+    {
+        "name": "Barshon Bari",
+        "email": "barshon@google.com",
+        "password": "$2y$10$1n50XfmQBvWXrZlsh8Y5Peqsqkr504sW4m4WGCp55fCe5\/aZLvBay",
+        "handle": "barshon",
+        "role": "admin"
+    },
+    {
+        "name": "Solim",
+        "email": "solim@google.com",
+        "password": "$2y$10$PypkjLtSDd.4aA5svn\/Hke1kZZbEXodemxqxJ8y5ftBAaai6KEeKC",
+        "handle": "solim",
+        "role": "customer"
+    }
+]

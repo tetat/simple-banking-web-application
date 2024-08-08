@@ -17,7 +17,7 @@ $title = "Transactions of Al Nahian";
       <div class="bg-sky-600 pb-32">
         
         <!-- Navigation -->
-        <?php include(__DIR__ . "/../layouts/navbar.php") ?>
+        <?php include(__DIR__ . "/../layouts/admin-navbar.php") ?>
 
         <header class="py-10">
           <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
