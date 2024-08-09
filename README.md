@@ -7,6 +7,7 @@ This is a simple banking application with features for both 'Admin' and 'Custome
 - See all transactions made by all users.
 - Search and view transactions by a specific user using their email.
 - View a list of all registered customers.
+- Can add a customer.
 
 ## Customer Features
 
