@@ -49,6 +49,7 @@
                         type="text"
                         name="name"
                         id="name"
+                        value="<?= old('name') ?>"
                         autocomplete="given-name"
                         required
                         class="block w-full p-2 text-gray-900 border-0 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" />
@@ -86,6 +87,7 @@
                         type="email"
                         name="email"
                         id="email"
+                        value="<?= old('email') ?>"
                         autocomplete="email"
                         required
                         class="block w-full p-2 text-gray-900 border-0 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" />

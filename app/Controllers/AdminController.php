@@ -4,9 +4,24 @@ namespace App\Controllers;
 
 use App\Core\Session;
 use App\Constants\UserRole;
+use App\Constants\StoragePath;
 
 class AdminController
 {
+    public function store(array $admin)
+    {
+        $admin['password'] = password_hash($admin["password"], PASSWORD_DEFAULT);
+        $admin['role'] = UserRole::ADMIN;
+
+        $users = (new UserController())->index();
+        $users[] = $admin;
+    
+        $jsonData = json_encode($users, JSON_PRETTY_PRINT);
+        file_put_contents(StoragePath::USERS, $jsonData);
+
+        return true;
+    }
+
     public function createCustomer()
     {
         return view('admin/add_customer', [

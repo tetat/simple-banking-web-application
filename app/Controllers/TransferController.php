@@ -4,9 +4,8 @@ namespace App\Controllers;
 
 use App\Core\Session;
 use App\Constants\StoragePath;
-use App\Constants\Transaction;
+use App\Constants\UserRole;
 use App\FormValidator\TransferForm;
-// use App\Controllers\BalanceController;
 
 class TransferController
 {
@@ -48,11 +47,11 @@ class TransferController
         if (!$reciever) {
             $form->error('404', 'Reciever not found.')->throw();
         }
-
+        if ($reciever->role === UserRole::ADMIN) {
+            $form->error('auth', 'You can not give money to an admin.')->throw();
+        }
         if ($sender->email === $reciever->email ?? '') {
-            $form->error(
-                'self', 'Self transaction is not valid.'
-            )->throw();
+            $form->error('self', 'Self transaction is not valid.')->throw();
         }
 
         $this->balanceController->update($form, $sender->handle, -$amount);

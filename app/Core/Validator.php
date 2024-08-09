@@ -6,7 +6,7 @@ class Validator
 {
     public static function isString($value, $min = 1, $max = INF): bool
     {
-        $value = trim($value);
+        $value = htmlspecialchars(trim($value));
 
         return strlen($value) >= $min && strlen($value) <= $max;
     }
