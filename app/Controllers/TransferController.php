@@ -3,15 +3,19 @@
 namespace App\Controllers;
 
 use App\Core\Session;
-use App\Controllers\BalanceController;
+use App\Constants\StoragePath;
+use App\Constants\Transaction;
 use App\FormValidator\TransferForm;
+// use App\Controllers\BalanceController;
 
 class TransferController
 {
+    private UserController $userController;
     private BalanceController $balanceController;
 
     public function __construct()
     {
+        $this->userController = new UserController();
         $this->balanceController = new BalanceController();
     }
     
@@ -37,15 +41,63 @@ class TransferController
             'amount' => $_POST['amount']
         ]);
 
-        $sender_handle = $_SESSION['user']->handle;
         $amount = (float) $request['amount'];
-        $this->balanceController->update($form, $sender_handle, -$amount);
+        $sender = $_SESSION['user'];
+        $reciever = $this->userController->show(explode('@', $request["email"])[0]);
+
+        if (!$reciever) {
+            $form->error('404', 'Reciever not found.')->throw();
+        }
+
+        if ($sender->email === $reciever->email ?? '') {
+            $form->error(
+                'self', 'Self transaction is not valid.'
+            )->throw();
+        }
+
+        $this->balanceController->update($form, $sender->handle, -$amount);
+        $this->balanceController->update($form, $reciever->handle, $amount);
+
+        $transactions = $this->index();
         
-        $reciever_handle = explode('@', $request["email"])[0];
-        $this->balanceController->update($form, $reciever_handle, $amount);
+        $transactions[] = [
+            'sender' => [
+                'name' => $sender->name,
+                'email' => $sender->email,
+            ],
+            'reciever' => [
+                'name' => $reciever->name,
+                'email' => $reciever->email,
+            ],
+            'amount' => $amount,
+            'time' => date("Y-m-d h:i:sa")
+        ];
+
+        $jsonData = json_encode($transactions, JSON_PRETTY_PRINT);
+        file_put_contents(StoragePath::TRANSACTIONS, $jsonData);
 
         Session::flash('success', 'Transaction successfull.');
 
         redirect(previousPage());
+    }
+
+    public function index()
+    {
+        $transactions = json_decode(
+            file_get_contents(StoragePath::TRANSACTIONS, true)
+        );
+
+        return $transactions ?? [];
+    }
+
+    public function show(string $email)
+    {
+        $transactions = $this->index();
+
+        $transactions = array_filter($transactions, function ($transaction) use($email){
+            return $email === $transaction->sender->email or $email === $transaction->reciever->email;
+        });
+
+        return $transactions ?? [];
     }
 }

@@ -62,6 +62,7 @@
                       type="email"
                       name="email"
                       id="email"
+                      value="<?= old('email') ?>"
                       class="block w-full ring-0 outline-none py-2 text-gray-800 border-b placeholder:text-gray-400 md:text-4xl"
                       placeholder="Recipient's Email Address"
                       required />
@@ -76,8 +77,9 @@
                         type="number"
                         name="amount"
                         id="amount"
+                        value="<?= old('amount') ?>"
                         class="block w-full ring-0 outline-none pl-4 py-2 md:pl-8 text-gray-800 border-b border-b-emerald-500 placeholder:text-gray-400 md:text-4xl"
-                        placeholder="0.00"
+                        placeholder="1.00"
                         required />
                     </div>
 

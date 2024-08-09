@@ -25,6 +25,14 @@
       <main class="-mt-32">
         <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
           <div class="bg-white rounded-lg p-2">
+
+            <?php foreach($errors as $key => $value): ?>
+              <p class="text-sm text-red-700 p-2 rounded font-bold"><?= $value ?></p>
+            <?php endforeach ?>
+            <?php if ($success): ?>
+              <p class="text-lg text-green-700 bg-gray-200 p-2 rounded font-bold"><?= $success ?></p>
+            <?php endif ?>
+
             <!-- Current Balance Stat -->
             <dl
               class="mx-auto grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
@@ -49,8 +57,9 @@
                 </h3>
                 <div class="mt-4 text-sm text-gray-500">
                   <form
-                    action="#"
-                    method="POST">
+                    action="/customer/deposit"
+                    method="POST"
+                    novalidate>
                     <!-- Input Field -->
                     <div class="relative mt-2 rounded-md">
                       <div
@@ -61,6 +70,7 @@
                         type="number"
                         name="amount"
                         id="amount"
+                        value="<?= old('amount') ?>"
                         class="block w-full ring-0 outline-none text-xl pl-4 py-2 sm:pl-8 text-gray-800 border-b border-b-emerald-500 placeholder:text-gray-400 sm:text-4xl"
                         placeholder="1.00"
                         min="1"

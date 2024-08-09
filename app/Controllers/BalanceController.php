@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Constants\StoragePath;
-use App\FormValidator\TransferForm;
 
 class BalanceController
 {
@@ -44,13 +43,9 @@ class BalanceController
         return $balance;
     }
 
-    public function update(TransferForm $form, string $handle, float $amount)
+    public function update($form, string $handle, float $amount)
     {
         $balance = (float) $this->show($handle)['amount'];
-
-        if ($balance === -1) {
-            $form->error('404', 'Reciever not found.')->throw();
-        }
 
         if ($balance + $amount < 0) {
             $form->error('balance', 'Your balance is insufficient.')->throw();
