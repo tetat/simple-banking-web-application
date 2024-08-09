@@ -14,7 +14,7 @@ class Admin
         }
 
         if ($_SESSION['user']->role !== UserRole::ADMIN) {
-            redirect(ViewPath::DASHBOARD);
+            redirect(previousPage());
         }
     }
 }

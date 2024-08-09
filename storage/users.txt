@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Mario Potter",
+        "email": "mario@google.com",
+        "password": "$2y$10$p0LcgvZ75PuspxtmqqZhHOIJMzZQCfoHdPyvtSJIiAteQowvZ.g4q",
+        "handle": "mario",
+        "role": "admin"
+    },
+    {
+        "name": "Barshon Bari",
+        "email": "barshon@google.com",
+        "password": "$2y$10$BtBDNCesCL20i20CJI4D0.lvJ.aCTXD6JE06bjIwwAXxxwGDug8FW",
+        "handle": "barshon",
+        "role": "customer"
+    },
+    {
+        "name": "Ginny Daisy",
+        "email": "ginny@google.com",
+        "password": "$2y$10$Y.7R0lkobHtCYWLBAXpFOO3ZWt19X2hCSGoCwispS5KedsoDZ\/O5m",
+        "handle": "ginny",
+        "role": "customer"
+    },
+    {
+        "name": "Christen Case",
+        "email": "xuxeguje@mailinator.com",
+        "password": "$2y$10$vY4T6m.RkA0fHD55q8rQmeO.z05aILUYkyR4BmZUzmoGvkPYaMOOq",
+        "handle": "xuxeguje",
+        "role": "customer"
+    }
+]

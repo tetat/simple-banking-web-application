@@ -8,6 +8,13 @@
             <div class="flex space-x-4">
             <!-- Current: "bg-emerald-700 text-white", Default: "text-white hover:bg-emerald-500 hover:bg-opacity-75" -->
             <a
+                href='/'
+                class="text-white <?= uriIs('/') ?> rounded-md py-2 px-3 text-sm font-medium"
+                aria-current="page"
+                >Home</a
+            >
+
+            <a
                 href='/customer/dashboard'
                 class="text-white <?= uriIs('/customer/dashboard') ?> rounded-md py-2 px-3 text-sm font-medium"
                 aria-current="page"
@@ -130,6 +137,13 @@
     class="sm:hidden"
     id="mobile-menu">
     <div class="space-y-1 pt-2 pb-3">
+        <a
+        href='/'
+        class="text-white <?= uriIs('/') ?> rounded-md py-2 px-3 text-sm font-medium"
+        aria-current="page"
+        >Home</a
+        >
+
         <a
         href='/customer/dashboard'
         class="text-white <?= uriIs('/customer/dashboard') ?> rounded-md py-2 px-3 text-sm font-medium"

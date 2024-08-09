@@ -24,6 +24,7 @@ class RegisterController
     public function create()
     {
         view("register", [
+            'title' => "Register - Bangubank",
             'errors' => Session::get('errors')
         ]);
     }
@@ -60,6 +61,13 @@ class RegisterController
             "handle" => $handle,
             "balance" => 0
         ]);
+
+        if (isset($_SESSION['user'])) {
+            if ($_SESSION['user']->role === UserRole::ADMIN) {
+                Session::flash('success', 'Customer has been added successfully.');
+                redirect(previousPage());
+            }
+        }
 
         Session::flash('success', 'Your account has been created. Please login!');
         redirect(ViewPath::LOGIN);

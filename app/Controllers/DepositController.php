@@ -48,7 +48,7 @@ class DepositController
         $transactions[] = [
             'sender' => [
                 'name' => 'Self',
-                'email' => '',
+                'email' => 'Deposit',
             ],
             'reciever' => [
                 'name' => $user->name,

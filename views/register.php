@@ -1,11 +1,3 @@
-<?php 
-
-$title = "Register - Bangubank";
-
-// if ($errors)dd($errors);
-
-?>
-
 <!DOCTYPE html>
 <html
   class="h-full bg-white"

@@ -20,6 +20,7 @@ class SessionController
     public function create()
     {
         view("login", [
+            'title' => "Login - Bangubank",
             'errors' => Session::get('errors'),
             'success' => Session::get('success')
         ]);
@@ -50,7 +51,7 @@ class SessionController
         }
 
         Session::put('user', $user);
-        redirect(($user->role === UserRole::ADMIN) ? ViewPath::CUSTOMERS : ViewPath::DASHBOARD);
+        redirect(ViewPath::HOME);
     }
 
     public function destroy()

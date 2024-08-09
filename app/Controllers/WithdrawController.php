@@ -52,7 +52,7 @@ class WithdrawController
             ],
             'reciever' => [
                 'name' => 'Self',
-                'email' => '',
+                'email' => 'Withdraw',
             ],
             'amount' => $amount,
             'time' => date("Y-m-d h:i:sa")

@@ -14,7 +14,8 @@ class Customer
         }
 
         if ($_SESSION['user']->role !== UserRole::CUSTOMER) {
-            redirect(ViewPath::CUSTOMERS);
+            // redirect(ViewPath::CUSTOMERS);
+            redirect(previousPage());
         }
     }
 }

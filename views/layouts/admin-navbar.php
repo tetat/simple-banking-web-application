@@ -8,13 +8,18 @@
             <div class="flex space-x-4">
             <!-- Current: "bg-sky-700 text-white", Default: "text-white hover:bg-sky-500 hover:bg-opacity-75" -->
             <a
-                href="/admin/customers"
-                class="text-white <?= uriIs('/admin/customers') ?> rounded-md py-2 px-3 text-sm font-medium"
+                href="/"
+                class="text-white <?= uriIs('/') ?> rounded-md py-2 px-3 text-sm font-medium"
+                >Home</a
+            >
+            <a
+                href="/customers"
+                class="text-white <?= uriIs('/customers') ?> rounded-md py-2 px-3 text-sm font-medium"
                 >Customers</a
             >
             <a
-                href="/admin/transactions"
-                class="text-white <?= uriIs('/admin/transactions') ?> rounded-md py-2 px-3 text-sm font-medium"
+                href="/customers/transactions"
+                class="text-white <?= uriIs('/customers/transactions') ?> rounded-md py-2 px-3 text-sm font-medium"
                 >Transactions</a
             >
             </div>
@@ -37,7 +42,7 @@
                 <span
                 class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100">
                 <span class="font-medium leading-none text-sky-700"
-                    >AS</span
+                    ><?= strtoupper(mb_substr($admin->name, 0, 2)) ?></span
                 >
                 </span>
                 <!-- <img
@@ -120,6 +125,11 @@
     id="mobile-menu">
     <div class="pt-2 pb-3 space-y-1">
         <a
+        href="/"
+        class="block px-3 py-2 text-base font-medium text-white rounded-md hover:bg-sky-500 hover:bg-opacity-75"
+        >Home</a
+        >
+        <a
         href="/customers"
         class="block px-3 py-2 text-base font-medium text-white rounded-md hover:bg-sky-500 hover:bg-opacity-75"
         >Customers</a
@@ -140,16 +150,16 @@
             <span
             class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100">
             <span class="font-medium leading-none text-sky-700"
-                >AS</span
+                ><?= strtoupper(mb_substr($admin->name, 0, 2)) ?></span
             >
             </span>
         </div>
         <div class="ml-3">
             <div class="text-base font-medium text-white">
-            Ahmed Shamim Hasan Shaon
+            <?= $admin->name ?>
             </div>
             <div class="text-sm font-medium text-sky-300">
-            ahmed@shamim.com
+            <?= $admin->email ?>
             </div>
         </div>
         <button
