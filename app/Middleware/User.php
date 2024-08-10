@@ -12,10 +12,10 @@ class User
         if (empty($_SESSION['user'])) {
             CommonException::throw(
                 [
-                    'alert' => ["403" => "You are not allowed to access this page."],
+                    'alert' => ["403" => "You are not allowed to access your requested page."],
                 ],
                 [],
-                ViewPath::DASHBOARD
+                ViewPath::HOME
             );
         }
     }

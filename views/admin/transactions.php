@@ -1,9 +1,3 @@
-<?php
-
-$title = "Transactions";
-
-?>
-
 <!DOCTYPE html>
 <html
   class="h-full bg-gray-100"

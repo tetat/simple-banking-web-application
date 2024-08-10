@@ -1,10 +1,3 @@
-<?php
-
-use App\Constants\Transaction;
-
-// dd($transactions);
-?>
-
 <!DOCTYPE html>
 <html
   class="h-full bg-gray-100"
