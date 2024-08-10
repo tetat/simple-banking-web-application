@@ -20,12 +20,11 @@ class DepositController
     public function create()
     {
         $userHandle = $_SESSION["user"]->handle;
-        $user = $_SESSION["user"];
         $balance = $this->balanceController->show($userHandle);
 
         return view("customer/deposit", [
             "title" => "Deposit Balance",
-            "user" => $user,
+            "user" => $_SESSION["user"],
             "balance" => $balance['amount'],
             'success' => Session::get('success'),
             'errors' => Session::get('errors') ?? [],

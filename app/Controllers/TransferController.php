@@ -47,6 +47,9 @@ class TransferController
         if (!$reciever) {
             $form->error('404', 'Reciever not found.')->throw();
         }
+        if ($request["email"] !== $reciever->email) {
+            $form->error('404', 'Reciever not found.')->throw();
+        }
         if ($reciever->role === UserRole::ADMIN) {
             $form->error('auth', 'You can not give money to an admin.')->throw();
         }

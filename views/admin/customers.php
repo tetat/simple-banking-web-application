@@ -24,7 +24,12 @@
 
       <main class="-mt-32">
         <div class="px-4 pb-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div class="py-8 bg-white rounded-lg">
+          <div class="py-2 bg-white rounded-lg">
+            <?php
+              if (isset($errors['alert'])) {
+                include(__DIR__ . '/../alerts/error-alert.php');
+              }  
+            ?>
             <!-- List of All The Customers -->
             <div class="px-4 sm:px-6 lg:px-8">
               <div class="sm:flex sm:items-center">

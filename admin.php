@@ -49,12 +49,17 @@ while ($option !== 0) {
         continue;
     }
 
-    (new AdminController())->store([
+    $result = (new AdminController())->store([
         'name' => $name,
         'email' => $email,
         'password' => $password,
         'handle' => explode('@', $email)[0],
     ]);
+
+    if (!$result) {
+        echo "\n" . 'User already exist.' . "\n\n";
+        continue;
+    }
 
     echo 'Admin added successfully.' . "\n\n";
     $option = 0;

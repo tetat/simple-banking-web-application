@@ -23,7 +23,7 @@ class RegisterController
 
     public function create()
     {
-        view("register", [
+        return view("register", [
             'title' => "Register - Bangubank",
             'errors' => Session::get('errors')
         ]);

@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Constants\UserRole;
 use App\Core\Session;
 use App\Constants\ViewPath;
 use App\Controllers\UserController;
@@ -19,7 +18,7 @@ class SessionController
     
     public function create()
     {
-        view("login", [
+        return view("login", [
             'title' => "Login - Bangubank",
             'errors' => Session::get('errors'),
             'success' => Session::get('success')
@@ -38,10 +37,12 @@ class SessionController
 
         $user = $this->userController->show($handle);
         
-        if ($user->handle === $request["handle"]) {
+        if ($user->email === $request["email"]) {
             if (! password_verify($request["password"], $user->password)) {
                 $user = [];
             }
+        } else {
+            $user = [];
         }
 
         if (!$user) {

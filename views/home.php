@@ -3,14 +3,22 @@
   class="h-full bg-slate-100"
   lang="en">
   
-  <!-- head section -->
-   <?php
+<?php
 
 use App\Constants\UserRole;
-
- include("layouts/head.php") ?>
+// <!-- head section -->
+include("layouts/head.php") 
+ 
+?>
   
   <body class="flex flex-col items-baseline justify-center min-h-screen">
+
+  <?php
+    if (isset($errors['alert'])) {
+      include('alerts/error-alert.php');
+    }  
+  ?>
+
     <section
       class="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-12">
       <h1

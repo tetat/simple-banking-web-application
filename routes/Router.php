@@ -3,6 +3,10 @@
 namespace Routes;
 
 use App\Constants\HttpCode;
+use App\Constants\UserRole;
+use App\Constants\ViewPath;
+use App\Core\CommonException;
+use App\Core\Session;
 use App\Middleware\Middleware;
 
 class Router
@@ -29,7 +33,31 @@ class Router
             return (new $controller())->$action();
         }
 
-        view($status);
+        $next = '/';
+        $user = Session::get('user');
+        if ($user) {
+            if ($user->role === UserRole::ADMIN) $next = ViewPath::CUSTOMERS;
+            else $next = ViewPath::DASHBOARD;
+        } 
+
+        if ($status === HttpCode::NOTFOUND) {
+            CommonException::throw(
+                [
+                    'alert' => ["404" => "Requested page not found."],
+                ],
+                [],
+                $next
+            );
+        }
+        if ($status === HttpCode::FORBIDDEN) {
+            CommonException::throw(
+                [
+                    'alert' => ["403" => "You are not allowed to access your requested page."],
+                ],
+                [],
+                $next
+            );
+        }
     }
 
     public function get(string $path, array $controller)

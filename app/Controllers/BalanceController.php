@@ -50,7 +50,7 @@ class BalanceController
         if ($balance + $amount < 0) {
             $form->error('balance', 'Your balance is insufficient.')->throw();
         }
-
+        
         $balances = $this->index();
 
         foreach ($balances as $b) {

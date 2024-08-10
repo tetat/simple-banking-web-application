@@ -3,13 +3,10 @@
 namespace App\FormValidator;
 
 use App\Core\Validator;
-use App\Core\ValidationException;
+use App\Core\CommonException;
 
-class RegisterForm
+class RegisterForm extends Form
 {
-    protected $errors = [];
-    protected $success = [];
-
     public function __construct(public array $attributes)
     {
         if (!Validator::isString($attributes['name'], 3, 50)) {
@@ -44,35 +41,6 @@ class RegisterForm
 
     public function throw()
     {
-        ValidationException::throw($this->errors(), $this->attributes);
-    }
-
-    public function failed()
-    {
-        return count($this->errors);
-    }
-
-    public function errors()
-    {
-        return $this->errors;
-    }
-
-    public function error($field, $message)
-    {
-        $this->errors[$field] = $message;
-
-        return $this;
-    }
-
-    public function getSuccess()
-    {
-        return $this->success;
-    }
-
-    public function putSuccess($field, $message)
-    {
-        $this->success[$field] = $message;
-
-        return $this;
+        CommonException::throw($this->errors(), $this->attributes, previousPage());
     }
 }

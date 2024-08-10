@@ -29,9 +29,10 @@
             <?php foreach($errors as $key => $value): ?>
               <p class="text-sm text-red-700 p-2 rounded font-bold"><?= $value ?></p>
             <?php endforeach ?>
-            <?php if ($success): ?>
-              <p class="text-lg text-green-700 bg-gray-200 p-2 rounded font-bold"><?= $success ?></p>
-            <?php endif ?>
+
+            <?php if ($success) {
+              include(__DIR__ . '/../alerts/success-alert.php');
+            } ?>
 
             <!-- Current Balance Stat -->
             <dl

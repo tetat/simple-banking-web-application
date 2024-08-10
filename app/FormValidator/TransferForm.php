@@ -3,12 +3,10 @@
 namespace App\FormValidator;
 
 use App\Core\Validator;
-use App\Core\ValidationException;
+use App\Core\CommonException;
 
-class TransferForm
+class TransferForm extends Form
 {
-    protected $errors = [];
-
     public function __construct(public array $attributes)
     {
         if (!Validator::isEmail($attributes['email'])) {
@@ -29,23 +27,6 @@ class TransferForm
 
     public function throw()
     {
-        ValidationException::throw($this->errors(), $this->attributes);
-    }
-
-    public function failed()
-    {
-        return count($this->errors);
-    }
-
-    public function errors()
-    {
-        return $this->errors;
-    }
-
-    public function error($field, $message)
-    {
-        $this->errors[$field] = $message;
-
-        return $this;
+        CommonException::throw($this->errors(), $this->attributes, previousPage());
     }
 }

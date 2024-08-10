@@ -8,17 +8,23 @@ use App\Constants\StoragePath;
 
 class AdminController
 {
-    public function store(array $admin)
-    {
+    // this method for admin register with CLI
+    public function store(array $admin): bool
+    {        
         $admin['password'] = password_hash($admin["password"], PASSWORD_DEFAULT);
         $admin['role'] = UserRole::ADMIN;
+
+        // if user already exist
+        if ((new UserController())->show($admin['handle'])) {
+            return false;
+        }
 
         $users = (new UserController())->index();
         $users[] = $admin;
     
         $jsonData = json_encode($users, JSON_PRETTY_PRINT);
         file_put_contents(StoragePath::USERS, $jsonData);
-
+        
         return true;
     }
 
@@ -40,10 +46,11 @@ class AdminController
             return $u->role === UserRole::CUSTOMER;
         });
 
-        view("admin/customers", [
+        return view("admin/customers", [
             'title' => "All Customers",
             'admin' => $_SESSION['user'],
             'users' => $users,
+            'errors' => Session::get('errors')
         ]);
     }
 
@@ -51,7 +58,7 @@ class AdminController
     {
         $transactions = (new TransferController())->index();
 
-        view("admin/transactions", [
+        return view("admin/transactions", [
             'title' => "Transactions",
             'admin' => $_SESSION['user'],
             'transactions' => $transactions,
@@ -60,11 +67,10 @@ class AdminController
 
     public function userTransactions()
     {
-        // dd($_GET);
         $user = (new UserController())->show($_GET['handle']);
         $transactions = (new TransferController())->show($user->email);
 
-        view("admin/customer_transactions", [
+        return view("admin/customer_transactions", [
             'title' => "Transactions of {$user->name}",
             'admin' => $_SESSION['user'],
             'user' => $user,

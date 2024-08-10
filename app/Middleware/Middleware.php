@@ -2,9 +2,7 @@
 
 namespace App\Middleware;
 
-use App\Middleware\Auth\User;
-use App\Middleware\Auth\Admin;
-use App\Middleware\Auth\Customer;
+use App\Core\CommonException;
 
 class Middleware
 {
@@ -22,7 +20,13 @@ class Middleware
         $middleware = static::MAP[$key] ?? null;
 
         if (! $middleware) {
-            // throw new Exception("No matching middleware found for key {$key}");
+            CommonException::throw(
+                [
+                    'alert' => ["middleware" => "No matching middleware found for key {$key}"],
+                ],
+                [],
+                previousPage()
+            );
         }
 
         (new $middleware)->handle();

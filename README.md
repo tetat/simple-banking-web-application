@@ -2,6 +2,18 @@
 
 This is a simple banking application with features for both 'Admin' and 'Customer' users.
 
+## To run web application
+
+The entry point is `public` folder. example,
+
+```bash
+php -S localhost:8888 -t public
+```
+
+## Adding an admin
+
+You can only add an admin with the help of CLI. You need to run `php admin.php` then you can add an admin.
+
 ## Admin Features
 
 - See all transactions made by all users.

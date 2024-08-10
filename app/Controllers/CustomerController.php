@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-// use App\Controllers\BalanceController;
+use App\Core\Session;
 
 class CustomerController
 {
@@ -26,7 +26,8 @@ class CustomerController
             "title" => "Dashboard",
             "user" => $user,
             "balance" => $balance['amount'],
-            "transactions" => $transactions
+            "transactions" => $transactions,
+            'errors' => Session::get('errors')
         ]);
     }
 }

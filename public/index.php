@@ -4,7 +4,7 @@ session_start();
 
 use Routes\Router;
 use App\Core\Session;
-use App\Core\ValidationException;
+use App\Core\CommonException;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
@@ -16,11 +16,11 @@ require_once __DIR__ . "/../routes/routes.php";
 
 try {
     $router->route($url, $method);
-} catch (ValidationException $exception) {
+} catch (CommonException $exception) {
     Session::flash('errors', $exception->errors);
     Session::flash('old', $exception->old);
 
-    redirect(previousPage());
+    redirect($exception->next);
 }
 
 Session::unflash();

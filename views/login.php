@@ -16,7 +16,7 @@
       </div>
 
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-        <div class="px-6 py-12 bg-white shadow sm:rounded-lg sm:px-12">
+        <div class="px-6 py-4 bg-white shadow sm:rounded-lg sm:px-6">
           
           <?php if ($success): ?>
             <p class="text-lg text-green-700 bg-gray-200 p-2 rounded font-bold"><?= $success ?></p>
@@ -82,9 +82,17 @@
               </button>
             </div>
           </form>
+          <p class="mt-2 text-sm text-center text-gray-500">
+            Go back to home?
+            <a
+              href="/"
+              class="font-semibold leading-6 text-emerald-600 hover:text-emerald-500"
+              >Home</a
+            >
+          </p>
         </div>
         
-        <p class="mt-10 text-sm text-center text-gray-500">
+        <p class="mt-4 text-sm text-center text-gray-500">
           Don't have an account?
           <a
             href="/register/create"

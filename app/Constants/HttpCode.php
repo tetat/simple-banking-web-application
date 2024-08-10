@@ -9,4 +9,5 @@ class HttpCode
     public const CREATED = 202;
     public const NOTFOUND = 404;
     public const FORBIDDEN = 403;
+    public const INTSERVER = 500;
 }
