@@ -40,7 +40,7 @@
                 </dt>
                 <dd
                   class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
-                  $<?= $balance ?>
+                  $<?= number_format($balance, 2, '.', ',') ?>
                 </dd>
               </div>
             </dl>
@@ -98,12 +98,12 @@
                           <?php if ($transaction->sender->email === $user->email): ?>
                             <td
                               class="whitespace-nowrap px-2 py-4 text-sm font-medium text-red-600">
-                              <?= '-$' . $transaction->amount ?>
+                              <?= '-$' . number_format($transaction->amount, 2, '.', ',') ?>
                             </td>
                           <?php else : ?>
                             <td
                               class="whitespace-nowrap px-2 py-4 text-sm font-medium text-emerald-600">
-                              <?= '+$' . $transaction->amount ?>
+                              <?= '+$' . number_format($transaction->amount, 2, '.', ',') ?>
                             </td>
                           <?php endif ?>
                           <td

@@ -82,7 +82,7 @@
                           <?php else : ?>
                             <td
                               class="whitespace-nowrap px-2 py-4 text-sm font-medium text-emerald-600">
-                              <?= '+$' . $transaction->amount ?>
+                              <?= '+$' . number_format($transaction->amount, 2, '.', ',') ?>
                             </td>
                           <?php endif ?>
                           <td

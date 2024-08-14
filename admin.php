@@ -6,6 +6,8 @@ require_once __DIR__ . "/vendor/autoload.php";
 
 echo 'Welcome to BanguBank admin registration.' . "\n\n";
 
+$option = -1;
+
 while ($option !== 0) {
     $errors = [];
 
