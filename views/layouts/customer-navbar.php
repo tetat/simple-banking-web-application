@@ -59,7 +59,7 @@
                 <span
                 class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
                 <span class="font-medium leading-none text-emerald-700"
-                    ><?= strtoupper(mb_substr($user->name, 0, 2)) ?></span
+                    ><?= strtoupper(mb_substr($user['name'], 0, 2)) ?></span
                 >
                 </span>
             </button>
@@ -179,16 +179,16 @@
             <span
             class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
             <span class="font-medium leading-none text-emerald-700"
-                >AS</span
+                ><?= strtoupper(mb_substr($user['name'], 0, 2)) ?></span
             >
             </span>
         </div>
         <div class="ml-3">
             <div class="text-base font-medium text-white">
-            <?= $user->name ?>
+            <?= $user['name'] ?>
             </div>
             <div class="text-sm font-medium text-emerald-300">
-            <?= $user->email ?>
+            <?= $user['email'] ?>
             </div>
         </div>
         <button

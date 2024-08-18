@@ -12,7 +12,8 @@ $url = parse_url($_SERVER["REQUEST_URI"])['path'];
 $method = $_SERVER["REQUEST_METHOD"];
 
 $router = new Router();
-require_once __DIR__ . "/../routes/routes.php";
+require_once __DIR__ . "/../routes/web.php";
+
 
 try {
     $router->route($url, $method);

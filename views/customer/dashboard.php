@@ -4,8 +4,12 @@
   lang="en">
 
   <!-- head section -->
-  <?php include(__DIR__ . "/../layouts/head-with-alpine.php") ?>
+  <?php
 
+use App\Constants\Transaction;
+
+ include(__DIR__ . "/../layouts/head-with-alpine.php") ?>
+  
   <body class="h-full">
     <div class="min-h-full">
       <div class="bg-emerald-600 pb-32">
@@ -16,7 +20,7 @@
         <header class="py-10">
           <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 class="text-3xl font-bold tracking-tight text-white">
-              Howdy, <?= $user->name ?> 👋
+              Howdy, <?= $user['name'] ?> 👋
             </h1>
           </div>
         </header>
@@ -89,26 +93,38 @@
                         <tr>
                           <td
                             class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
-                            <?= $transaction->reciever->name ?>
+                            <?= $transaction->user['name'] ?>
                           </td>
                           <td
                             class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                            <?= $transaction->reciever->email ?>
+                            <?= $transaction->user['email'] ?>
                           </td>
-                          <?php if ($transaction->sender->email === $user->email): ?>
-                            <td
-                              class="whitespace-nowrap px-2 py-4 text-sm font-medium text-red-600">
-                              <?= '-$' . $transaction->amount ?>
-                            </td>
-                          <?php else : ?>
+                          <?php if ($transaction->category === Transaction::DEPOSIT): ?>
                             <td
                               class="whitespace-nowrap px-2 py-4 text-sm font-medium text-emerald-600">
                               <?= '+$' . $transaction->amount ?>
                             </td>
+                          <?php elseif ($transaction->category === Transaction::WITHDRAW): ?>
+                            <td
+                              class="whitespace-nowrap px-2 py-4 text-sm font-medium text-red-600">
+                              <?= '$' . $transaction->amount ?>
+                            </td>
+                          <?php else: ?>
+                            <?php if ($transaction->sender_id === $transaction->user['id']): ?>
+                              <td
+                                class="whitespace-nowrap px-2 py-4 text-sm font-medium text-red-600">
+                                <?= '-$' . $transaction->amount ?>
+                              </td>
+                            <?php else: ?>
+                              <td
+                                class="whitespace-nowrap px-2 py-4 text-sm font-medium text-emerald-600">
+                                <?= '+$' . $transaction->amount ?>
+                              </td>
+                            <?php endif ?>
                           <?php endif ?>
                           <td
                             class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                            <?= $transaction->time ?>
+                            <?= $transaction->created_at ?>
                           </td>
                         </tr>
                         <?php endforeach ?>

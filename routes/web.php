@@ -5,9 +5,9 @@ use App\Controllers\AdminController;
 use App\Controllers\DepositController;
 use App\Controllers\SessionController;
 use App\Controllers\CustomerController;
-use App\Controllers\RegisterController;
 use App\Controllers\TransferController;
 use App\Controllers\WithdrawController;
+use App\Controllers\RegisterController;
 
 // GET route section
 $router->get("/", [HomeController::class, "home"]);

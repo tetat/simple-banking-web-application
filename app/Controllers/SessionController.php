@@ -3,17 +3,29 @@
 namespace App\Controllers;
 
 use App\Core\Session;
+use App\Core\DB\SqlDb;
+use App\Core\DB\FileDb;
+use Database\Connection;
 use App\Constants\ViewPath;
-use App\Controllers\UserController;
 use App\FormValidator\LoginForm;
+use App\Controllers\UserController;
 
 class SessionController
 {
+    private $db;
     private UserController $userController;
 
-    public function __construct()
+    public function __construct($db = null)
     {
-        $this->userController = new UserController();
+        $this->db = $db ?? Connection::create();
+
+        if (Session::get('driver') === 'file') {
+            $this->db = FileDb::create(Connection::create());
+        } else {
+            $this->db = SqlDb::create(Connection::create($this->db));
+        }
+
+        $this->userController = new UserController($this->db);
     }
     
     public function create()
@@ -32,13 +44,14 @@ class SessionController
             'password' => $_POST['password']
         ]);
 
-        $handle = explode('@', $request["email"])[0];
-        $request["handle"] = $handle;
+        $user = $this->userController->show([
+            'email' => $request["email"]
+        ]);
 
-        $user = $this->userController->show($handle);
+        // dd($user);
         
-        if ($user->email === $request["email"]) {
-            if (! password_verify($request["password"], $user->password)) {
+        if ($user['email'] === $request["email"]) {
+            if (! password_verify($request["password"], $user['password'])) {
                 $user = [];
             }
         } else {

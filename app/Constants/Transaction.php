@@ -6,4 +6,5 @@ class Transaction
 {
     public const DEPOSIT = 'deposit';
     public const WITHDRAW = 'withdraw';
+    public const TRANSFER = 'transfer';
 }

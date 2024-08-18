@@ -2,65 +2,81 @@
 
 namespace App\Controllers;
 
+use App\Core\Session;
+use Database\Connection;
 use App\Constants\StoragePath;
 
 class BalanceController
 {
+    private $db;
+    public function __construct($db = null)
+    {
+        $this->db = $db ?? Connection::create();
+    }
+    
     public function store(array $balance)
     {
-        $balances = $this->index();
 
-        $balances[] = $balance;
+        if (Session::get('driver') === 'file') {
+            $ids = $this->db->getAll(StoragePath::PRIMARYKEYS);
+            $ids['balance'] = (int) $ids['balance'] + 1;
+            $balance["id"] = $ids['balance'];
 
-        $balanceData = json_encode($balances, JSON_PRETTY_PRINT);
-        file_put_contents(StoragePath::BALANCES, $balanceData);
+            $balances = $this->db->getAll(StoragePath::BALANCES);
+
+            $balances[] = $balance;
+
+            $this->db->insert(StoragePath::BALANCES, $balances);
+            // update primary keys
+            $this->db->insert(StoragePath::PRIMARYKEYS, (array)$ids);
+        } else {
+            $query = "insert into balances (user_id, balance) values(:user_id, :balance)";
+            $id = $this->db->insert($query, $balance);
+            
+            return $id;
+        }
+        
     }
 
-    public function index()
+    public function show(array $request)
     {
-        $balances = json_decode(
-            file_get_contents(StoragePath::BALANCES, true)
-        ) ?? [];
-
-        return $balances;
-    }
-
-    public function show(string $handle)
-    {
-        $balances = $this->index();
         $balance = [];
-
-        foreach ($balances as $b) {
-            if ($b->handle === $handle) {
-                $balance = [
-                    'handle' => $b->handle,
-                    'amount' => $b->balance
-                ];
-                break;
-            }
+        
+        if (Session::get('driver') === 'file') {
+            $balance = $this->db->getOne(StoragePath::BALANCES, $request);
+        } else {
+            $query = "select * from balances where id = :id or user_id = :user_id";
+            $balance = $this->db->getOne($query, $request);
         }
 
         return $balance;
     }
 
-    public function update($form, string $handle, float $amount)
+    public function update($form, array $request)
     {
-        $balance = (float) $this->show($handle)['amount'];
+        $balance = $this->db->getOne(StoragePath::BALANCES, $request);
 
-        if ($balance + $amount < 0) {
+        if ((float) $balance['amount'] + $request['amount'] < 0) {
             $form->error('balance', 'Your balance is insufficient.')->throw();
         }
-        
-        $balances = $this->index();
+        $balance['amount'] = (float) $balance['amount'] + $request['amount'];
 
-        foreach ($balances as $b) {
-            if ($b->handle === $handle) {
-                $b->balance = $balance + $amount;
-                break;
+        if (Session::get('driver') === 'file') {
+            $balances = $this->db->getAll(StoragePath::BALANCES);
+
+            foreach ($balances as $b) {
+                if ($b->user_id === $request['user_id']) {
+                    $b->amount = $balance['amount'];
+                    break;
+                }
             }
-        }
 
-        $balanceData = json_encode($balances, JSON_PRETTY_PRINT);
-        file_put_contents(StoragePath::BALANCES, $balanceData);
+            $this->db->insert(StoragePath::BALANCES, $balances);
+        } else {
+            $query = "update balances SET amount = :amount where user_id = :user_id";
+            unset($balance['id']);
+            unset($balance['user_id']);
+            $this->db->update($query, $balance);
+        }
     }
 }

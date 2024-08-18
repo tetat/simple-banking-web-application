@@ -5,12 +5,15 @@ namespace App\Middleware;
 use App\Constants\UserRole;
 use App\Constants\ViewPath;
 use App\Core\CommonException;
+use App\Core\Session;
 
 class Customer
 {
     public function handle()
     {
-        if (empty($_SESSION['user'])) {
+        $user = Session::get('user', []);
+
+        if (empty($user)) {
             CommonException::throw(
                 [
                     'alert' => ["401" => "You are not authentic user."],
@@ -20,7 +23,7 @@ class Customer
             );
         }
 
-        if ($_SESSION['user']->role !== UserRole::CUSTOMER) {
+        if ($user['role'] !== UserRole::CUSTOMER) {
             CommonException::throw(
                 [
                     'alert' => ["403" => "You are not allowed to access your requested page."],

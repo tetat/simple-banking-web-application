@@ -2,6 +2,11 @@
 
 use App\Core\Session;
 
+function env(string $key, string $default = null)
+{
+    return $_ENV[$key] ?? $default;
+}
+
 // this function for selected route in navbar
 function uriIs(string $uri): string
 {
@@ -38,6 +43,11 @@ function redirect($location)
 function previousPage()
 {
     return $_SERVER['HTTP_REFERER'];
+}
+
+function base_path(string $path): string
+{
+    return __DIR__ . $path;
 }
 
 function dd($data)

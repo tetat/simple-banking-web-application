@@ -35,7 +35,7 @@ include("layouts/head.php")
       </p>
       <div
         class="flex flex-col gap-2 mb-8 lg:mb-16 md:flex-row md:justify-center">
-        <?php if (empty($_SESSION['user'])): ?>
+        <?php if (empty($user)): ?>
           <a
             href="/login/create"
             type="button"
@@ -50,7 +50,7 @@ include("layouts/head.php")
             Register as Customer
           </a>
         <?php else : ?>
-          <?php if ($_SESSION['user']->role === UserRole::ADMIN): ?>
+          <?php if ($user['role'] === UserRole::ADMIN): ?>
             <a
               href="/customers"
               type="button"

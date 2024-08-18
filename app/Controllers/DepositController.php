@@ -3,28 +3,43 @@
 namespace App\Controllers;
 
 use App\Core\Session;
+use App\Core\DB\SqlDb;
+use App\Core\DB\FileDb;
+use Database\Connection;
 use App\Constants\StoragePath;
+use App\Constants\Transaction;
 use App\FormValidator\DepositForm;
 
 class DepositController
 {
+    private $db;
     private BalanceController $balanceController;
     private TransferController $transferController;
 
-    public function __construct()
+    public function __construct($db = null)
     {
-        $this->balanceController = new BalanceController();
-        $this->transferController = new TransferController();
+        $this->db = $db ?? Connection::create();
+
+        if (Session::get('driver') === 'file') {
+            $this->db = FileDb::create();
+        } else {
+            $this->db = SqlDb::create($this->db);
+        }
+        
+        $this->balanceController = new BalanceController($this->db);
+        $this->transferController = new TransferController($this->db);
     }
     
     public function create()
     {
-        $userHandle = $_SESSION["user"]->handle;
-        $balance = $this->balanceController->show($userHandle);
-
+        $user = Session::get('user', []);
+        $balance = $this->balanceController->show([
+            'user_id' => $user['id']
+        ]);
+        // dd($balance);
         return view("customer/deposit", [
             "title" => "Deposit Balance",
-            "user" => $_SESSION["user"],
+            "user" => $user,
             "balance" => $balance['amount'],
             'success' => Session::get('success'),
             'errors' => Session::get('errors') ?? [],
@@ -38,27 +53,39 @@ class DepositController
         ]);
 
         $amount = (float) $request['amount'];
-        $user = $_SESSION['user'];
+        $user = Session::get('user', []);
 
-        $this->balanceController->update($form, $user->handle, $amount);
-
-        $transactions = $this->transferController->index();
+        $this->balanceController->update($form, [
+            'user_id' => $user['id'],
+            'amount' => $amount
+        ]);
         
-        $transactions[] = [
-            'sender' => [
-                'name' => 'Self',
-                'email' => 'Deposit',
-            ],
-            'reciever' => [
-                'name' => $user->name,
-                'email' => $user->email,
-            ],
+        $transaction = [
+            'sender_id' => $user['id'],
+            'reciever_id' => $user['id'],
             'amount' => $amount,
-            'time' => date("Y-m-d h:i:sa")
+            'category' => Transaction::DEPOSIT,
+            'created_at' => date("Y-m-d h:i:sa")
         ];
 
-        $jsonData = json_encode($transactions, JSON_PRETTY_PRINT);
-        file_put_contents(StoragePath::TRANSACTIONS, $jsonData);
+        if (Session::get('driver') === 'file') {
+            $ids = $this->db->getAll(StoragePath::PRIMARYKEYS);
+            $ids['transaction'] = (int) $ids['transaction'] + 1;
+            $transaction["id"] = $ids['transaction'];
+
+            $transactions = $this->transferController->index();
+            $transactions[] = $transaction;
+
+            $this->db->insert(StoragePath::TRANSACTIONS, $transactions);
+            // update primary keys
+            $this->db->insert(StoragePath::PRIMARYKEYS, (array)$ids);
+        } else {
+            unset($transaction['created_at']);
+            $query = "insert into transactions (sender_id, reciever_id, amount, category) values(:sender_id, :reciever_id, :amount, :category)";
+            $id = $this->db->insert($query, $transaction);
+
+            return $id;
+        }
 
         Session::flash('success', 'Deposit successfull.');
 

@@ -2,7 +2,10 @@
 
 namespace App\Controllers;
 
+use Database\Connection;
 use App\Core\Session;
+use App\Core\DB\SqlDb;
+use App\Core\DB\FileDb;
 use App\Constants\UserRole;
 use App\Constants\ViewPath;
 use App\Constants\StoragePath;
@@ -12,13 +15,22 @@ use App\Controllers\BalanceController;
 
 class RegisterController
 {
+    private $db;
     private UserController $userController;
     private BalanceController $balanceController;
 
-    public function __construct()
+    public function __construct($db = null)
     {
-        $this->userController = new UserController();
-        $this->balanceController = new BalanceController();
+        $this->db = $db ?? Connection::create();
+
+        if (Session::get('driver') === 'file') {
+            $this->db = FileDb::create();
+        } else {
+            $this->db = SqlDb::create($this->db);
+        }
+
+        $this->userController = new UserController($this->db);
+        $this->balanceController = new BalanceController($this->db);
     }
 
     public function create()
@@ -37,30 +49,50 @@ class RegisterController
             'password' => $_POST['password'],
             'password2' => $_POST['password2'],
         ]);
-
-
-        $handle = explode('@', $request["email"])[0];
-        $request["handle"] = $handle;
-        // if user already exist
-        if ($this->userController->show($handle)) {
+        
+        // dd('muri');
+        if ($this->userController->show(['email' => $request["email"]])) {
             $form->error('auth', 'User already exist.')->throw();
         }
+
 
         $request["password"] = password_hash($request["password"], PASSWORD_DEFAULT);
         unset($request["password2"]);
 
         $request["role"] = UserRole::CUSTOMER;
-        
-        $users = $this->userController->index();
-        $users[] = $request;
 
-        $jsonData = json_encode($users, JSON_PRETTY_PRINT);
-        file_put_contents(StoragePath::USERS, $jsonData);
+        if (Session::get('driver') === 'file') {
+            $ids = $this->db->getAll(StoragePath::PRIMARYKEYS);
 
-        $this->balanceController->store([
-            "handle" => $handle,
-            "balance" => 0
-        ]);
+            $ids['user'] = (int) $ids['user'] + 1;
+            $ids['balance'] = (int) $ids['balance'] + 1;
+            $request["id"] = $ids['user'];
+
+            // store user
+            $this->userController->store($request);
+            // store balance of this user
+            $this->balanceController->store([
+                "id" => $ids['balance'],
+                "user_id" => $ids['user'],
+                "amount" => 0
+            ]);
+            // update primary keys
+            $this->db->insert(StoragePath::PRIMARYKEYS, (array)$ids);
+        } else {
+            try {
+                // store user
+                $id = $this->userController->store($request);
+                
+                // store balance of this user
+                $this->balanceController->store([
+                    "user_id" => $id,
+                    "amount" => 0
+                ]);
+            } catch (\Exception $e) {
+                $form->error('500', 'Internal server error.')->throw();
+            }
+            
+        }
 
         if (isset($_SESSION['user'])) {
             if ($_SESSION['user']->role === UserRole::ADMIN) {

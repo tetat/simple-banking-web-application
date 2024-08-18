@@ -10,6 +10,21 @@ The entry point is `public` folder. example,
 php -S localhost:8888 -t public
 ```
 
+## About ENV File
+
+Copy the .env.example file and make the required configuration changes in the .env file
+
+## DB Selection
+
+This application has two types of DB. Select your desired DB in .env file
+
+- File System: `DB_CONNECTION=file`
+- MySQL DB: `DB_CONNECTION=mysql`
+
+## Adding Tables
+
+You can only add tables with the help of CLI. You need to run `php create-tables.php`.
+
 ## Adding an admin
 
 You can only add an admin with the help of CLI. You need to run `php admin.php` then you can add an admin.
@@ -36,7 +51,7 @@ You can only add an admin with the help of CLI. You need to run `php admin.php` 
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/tetat/simple-banking-web-application/tree/bank2
+git clone https://github.com/tetat/simple-banking-web-application/tree/bank-with-db
 ```
 
 ### UI Credit

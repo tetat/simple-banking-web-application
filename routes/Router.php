@@ -30,9 +30,10 @@ class Router
             Middleware::resolve($route['middleware']);
             
             [$controller, $action] = $route['controller'];
+            
             return (new $controller())->$action();
         }
-
+        
         $next = '/';
         $user = Session::get('user');
         if ($user) {
