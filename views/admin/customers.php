@@ -68,24 +68,24 @@
                           class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-sky-500">
                           <span
                             class="text-xl font-medium leading-none text-white"
-                            ><?= strtoupper(mb_substr($user->name, 0, 2)) ?></span
+                            ><?= strtoupper(mb_substr($user['name'], 0, 2)) ?></span
                           >
                         </span>
 
                         <div class="flex-auto min-w-0">
                           <p
                             class="text-sm font-semibold leading-6 text-gray-900">
-                            <a href="/customer/transactions?handle=<?=$user->handle?>">
+                            <a href="/customer/transactions?id=<?=$user['id']?>">
                               <span
                                 class="absolute inset-x-0 bottom-0 -top-px"></span>
-                              <?= $user->name ?>
+                              <?= $user['name'] ?>
                             </a>
                           </p>
                           <p class="flex mt-1 text-xs leading-5 text-gray-500">
                             <a
-                              href="/customer/transactions?handle=<?=$user->handle?>"
+                              href="/customer/transactions?id=<?=$user['id']?>"
                               class="relative truncate hover:underline"
-                              ><?= $user->email ?></a
+                              ><?= $user['email'] ?></a
                             >
                           </p>
                         </div>

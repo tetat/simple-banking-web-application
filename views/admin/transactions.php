@@ -44,7 +44,17 @@
                           <th
                             scope="col"
                             class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
-                            Customer Name
+                            Sender Name
+                          </th>
+                          <th
+                            scope="col"
+                            class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                            Reciever Name
+                          </th>
+                          <th
+                            scope="col"
+                            class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                            Type
                           </th>
                           <th
                             scope="col"
@@ -59,26 +69,27 @@
                         </tr>
                       </thead>
                       <tbody class="divide-y divide-gray-200 bg-white">
-                        <?php foreach($transactions as $transaction): ?>
+                        <?php foreach($transactions as $t): ?>
                         <tr>
                           <td
                             class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
-                            <?php
-                            if ($transaction->sender->name === 'Self'){
-                              echo $transaction->reciever->name;
-                            } else {
-                              echo $transaction->sender->name;
-                            }
-                            
-                            ?>
+                            <?= $t['sender_name'] ?>
                           </td>
-                            <td
+                          <td
+                            class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
+                            <?= $t['reciever_name'] ?>
+                          </td>
+                          <td
+                            class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
+                            <?= $t['category'] ?>
+                          </td>
+                          <td
                               class="whitespace-nowrap px-2 py-4 text-sm font-medium text-black-600">
-                              <?= '$' . $transaction->amount ?>
+                              <?= '$' . $t['amount'] ?>
                             </td>
                           <td
                             class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                            <?= $transaction->time ?>
+                            <?= $t['created_at'] ?>
                           </td>
                         </tr>
                         <?php endforeach ?>

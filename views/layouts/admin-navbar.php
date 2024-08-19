@@ -42,7 +42,7 @@
                 <span
                 class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100">
                 <span class="font-medium leading-none text-sky-700"
-                    ><?= strtoupper(mb_substr($admin->name, 0, 2)) ?></span
+                    ><?= strtoupper(mb_substr($admin['name'], 0, 2)) ?></span
                 >
                 </span>
                 <!-- <img
@@ -150,16 +150,16 @@
             <span
             class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100">
             <span class="font-medium leading-none text-sky-700"
-                ><?= strtoupper(mb_substr($admin->name, 0, 2)) ?></span
+                ><?= strtoupper(mb_substr($admin['name'], 0, 2)) ?></span
             >
             </span>
         </div>
         <div class="ml-3">
             <div class="text-base font-medium text-white">
-            <?= $admin->name ?>
+            <?= $admin['name'] ?>
             </div>
             <div class="text-sm font-medium text-sky-300">
-            <?= $admin->email ?>
+            <?= $admin['email'] ?>
             </div>
         </div>
         <button

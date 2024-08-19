@@ -15,34 +15,37 @@ class CustomerController
 
     public function __construct($db = null)
     {
-        $this->db = $db ?? Connection::create();
+        $database = $db ?? (new Connection())->create();
 
         if (Session::get('driver') === 'file') {
             $this->db = FileDb::create();
-        } else {
-            $this->db = SqlDb::create($this->db);
+        }
+        if (Session::get('driver') === 'mysql') {
+            $this->db = SqlDb::create($database);
         }
 
-        $this->balanceController = new BalanceController($this->db);
-        $this->transferController = new TransferController($this->db);
+        $this->balanceController = new BalanceController($database);
+        $this->transferController = new TransferController($database);
     }
 
     public function dashboard()
     {
         $user = Session::get('user');
         $balance = $this->balanceController->show([
+            'id' => 0,
             'user_id' => $user['id']
         ]);
         $transactions = $this->transferController->show([
-            'id' => $user['id']
+            'sender_id' => $user['id'],
+            'reciever_id' => $user['id']
         ]);
-        // dd($transactions);
+        
         return view("customer/dashboard", [
             "title" => "Dashboard",
             "user" => $user,
             "balance" => $balance['amount'],
             "transactions" => $transactions,
-            'errors' => Session::get('errors')
+            'errors' => Session::get('errors', [])
         ]);
     }
 }

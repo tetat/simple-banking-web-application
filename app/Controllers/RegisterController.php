@@ -21,16 +21,17 @@ class RegisterController
 
     public function __construct($db = null)
     {
-        $this->db = $db ?? Connection::create();
+        $database = $db ?? (new Connection())->create();
 
         if (Session::get('driver') === 'file') {
             $this->db = FileDb::create();
-        } else {
-            $this->db = SqlDb::create($this->db);
+        }
+        if (Session::get('driver') === 'mysql') {
+            $this->db = SqlDb::create($database);
         }
 
-        $this->userController = new UserController($this->db);
-        $this->balanceController = new BalanceController($this->db);
+        $this->userController = new UserController($database);
+        $this->balanceController = new BalanceController($database);
     }
 
     public function create()
@@ -50,11 +51,12 @@ class RegisterController
             'password2' => $_POST['password2'],
         ]);
         
-        // dd('muri');
-        if ($this->userController->show(['email' => $request["email"]])) {
+        if ($this->userController->show([
+            'id' => 0,
+            'email' => $request["email"]
+            ])) {
             $form->error('auth', 'User already exist.')->throw();
         }
-
 
         $request["password"] = password_hash($request["password"], PASSWORD_DEFAULT);
         unset($request["password2"]);
@@ -68,9 +70,8 @@ class RegisterController
             $ids['balance'] = (int) $ids['balance'] + 1;
             $request["id"] = $ids['user'];
 
-            // store user
             $this->userController->store($request);
-            // store balance of this user
+            
             $this->balanceController->store([
                 "id" => $ids['balance'],
                 "user_id" => $ids['user'],
@@ -80,13 +81,10 @@ class RegisterController
             $this->db->insert(StoragePath::PRIMARYKEYS, (array)$ids);
         } else {
             try {
-                // store user
                 $id = $this->userController->store($request);
                 
-                // store balance of this user
                 $this->balanceController->store([
-                    "user_id" => $id,
-                    "amount" => 0
+                    "user_id" => $id
                 ]);
             } catch (\Exception $e) {
                 $form->error('500', 'Internal server error.')->throw();
@@ -95,7 +93,7 @@ class RegisterController
         }
 
         if (isset($_SESSION['user'])) {
-            if ($_SESSION['user']->role === UserRole::ADMIN) {
+            if ($_SESSION['user']['role'] === UserRole::ADMIN) {
                 Session::flash('success', 'Customer has been added successfully.');
                 redirect(previousPage());
             }

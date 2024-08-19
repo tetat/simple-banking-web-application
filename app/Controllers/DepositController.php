@@ -18,25 +18,27 @@ class DepositController
 
     public function __construct($db = null)
     {
-        $this->db = $db ?? Connection::create();
+        $database = $db ?? (new Connection())->create();
 
         if (Session::get('driver') === 'file') {
             $this->db = FileDb::create();
-        } else {
-            $this->db = SqlDb::create($this->db);
+        }
+        if (Session::get('driver') === 'mysql') {
+            $this->db = SqlDb::create($database);
         }
         
-        $this->balanceController = new BalanceController($this->db);
-        $this->transferController = new TransferController($this->db);
+        $this->balanceController = new BalanceController($database);
+        $this->transferController = new TransferController($database);
     }
     
     public function create()
     {
         $user = Session::get('user', []);
         $balance = $this->balanceController->show([
+            'id' => 0,
             'user_id' => $user['id']
         ]);
-        // dd($balance);
+        
         return view("customer/deposit", [
             "title" => "Deposit Balance",
             "user" => $user,
@@ -54,7 +56,6 @@ class DepositController
 
         $amount = (float) $request['amount'];
         $user = Session::get('user', []);
-
         $this->balanceController->update($form, [
             'user_id' => $user['id'],
             'amount' => $amount
@@ -83,8 +84,6 @@ class DepositController
             unset($transaction['created_at']);
             $query = "insert into transactions (sender_id, reciever_id, amount, category) values(:sender_id, :reciever_id, :amount, :category)";
             $id = $this->db->insert($query, $transaction);
-
-            return $id;
         }
 
         Session::flash('success', 'Deposit successfull.');

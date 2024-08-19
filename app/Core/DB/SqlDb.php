@@ -22,18 +22,27 @@ class SqlDb
     {
         $stmt = $this->db->prepare($query);
         $stmt->execute();
-        $data = (array) $stmt->fetchAll();
-
-        return $data;
+        $result = $stmt->fetchAll();
+        if ($result) $result = (array) $result;
+        return $result;
     }
 
-    public function getOne(string $query, array $data) {
-
+    public function getMany(string $query, array $data)
+    {
         $stmt = $this->db->prepare($query);
         $stmt->execute($data);
-        $data = (array) $stmt->fetch();
+        $result = $stmt->fetchAll();
+        if ($result) $result = (array) $result;
+        return $result;
+    }
 
-        return $data;
+    public function getOne(string $query, array $data)
+    {
+        $stmt = $this->db->prepare($query);
+        $stmt->execute($data);
+        $result = $stmt->fetch();
+        if ($result) $result = (array) $result;
+        return $result;
     }
 
     public function update(string $query, array $request)

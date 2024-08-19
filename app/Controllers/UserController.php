@@ -14,13 +14,14 @@ class UserController
 
     public function __construct($db = null)
     {
-        $this->db = $db ?? Connection::create();
+        $database = $db ?? (new Connection())->create();
 
-        // if (Session::get('driver') === 'file') {
-        //     $this->db = FileDb::create(Connection::create());
-        // } else {
-        //     $this->db = SqlDb::create(Connection::create($this->db));
-        // }
+        if (Session::get('driver') === 'file') {
+            $this->db = FileDb::create();
+        }
+        if (Session::get('driver') === 'mysql') {
+            $this->db = SqlDb::create($database);
+        }
     }
 
     public function store(array $user)
@@ -40,14 +41,19 @@ class UserController
 
     public function index()
     {
-        $users = [];
+        $result = [];
         if (Session::get('driver') === 'file') {
-            $users = $this->db->getAll(StoragePath::USERS);
+            $result = $this->db->getAll(StoragePath::USERS);
         } else {
             $query = "select * from users;";
-            $users = $this->db->getAll($query);
+            $result = $this->db->getAll($query);
         }
 
+        $users = [];
+        foreach($result as $u) {
+            $users[] = (array) $u;
+        }
+        
         return $users;
     }
 

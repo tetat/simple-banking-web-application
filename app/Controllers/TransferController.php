@@ -19,22 +19,24 @@ class TransferController
 
     public function __construct($db = null)
     {
-        $this->db = $db ?? Connection::create();
+        $database = $db ?? (new Connection())->create();
 
         if (Session::get('driver') === 'file') {
             $this->db = FileDb::create();
-        } else {
-            $this->db = SqlDb::create($this->db);
+        }
+        if (Session::get('driver') === 'mysql') {
+            $this->db = SqlDb::create($database);
         }
         
-        $this->userController = new UserController($this->db);
-        $this->balanceController = new BalanceController($this->db);
+        $this->userController = new UserController($database);
+        $this->balanceController = new BalanceController($database);
     }
     
     public function create()
     {
         $user = Session::get('user', []);
         $balance = $this->balanceController->show([
+            'id' => 0,
             'user_id' => $user['id']
         ]);
 
@@ -56,7 +58,10 @@ class TransferController
 
         $amount = (float) $request['amount'];
         $sender = Session::get('user', []);
-        $reciever = $this->userController->show(['email' => $request["email"]]);
+        $reciever = $this->userController->show([
+            'id' => 0, // we have to provide an id for query. there is no user that contains id 0 but email will find that user.
+            'email' => $request["email"]
+        ]);
 
         if (!$reciever) {
             $form->error('404', 'Reciever not found.')->throw();
@@ -90,7 +95,15 @@ class TransferController
             $ids['transaction'] = (int) $ids['transaction'] + 1;
             $transaction["id"] = $ids['transaction'];
 
-            $transactions = $this->index();
+            $transactions = [];
+            $result = $this->index();
+            foreach($result as $t) {
+                unset($t['sender_name']);
+                unset($t['sender_email']);
+                unset($t['reciever_name']);
+                unset($t['reciever_email']);
+                $transactions[] = $t;
+            }
             $transactions[] = $transaction;
 
             $this->db->insert(StoragePath::TRANSACTIONS, $transactions);
@@ -100,8 +113,6 @@ class TransferController
             unset($transaction['created_at']);
             $query = "insert into transactions (sender_id, reciever_id, amount, category) values(:sender_id, :reciever_id, :amount, :category)";
             $id = $this->db->insert($query, $transaction);
-
-            return $id;
         }
 
         Session::flash('success', 'Transaction successfull.');
@@ -111,34 +122,100 @@ class TransferController
 
     public function index()
     {
-        $users = [];
+        $transactions = [];
         if (Session::get('driver') === 'file') {
-            $users = $this->db->getAll(StoragePath::TRANSACTIONS);
+            $result = $this->db->getAll(StoragePath::TRANSACTIONS);
+            foreach ($result as $t) {
+                $t = (array) $t;
+                $sender = $this->userController->show(['id' => $t["sender_id"]]);
+                $reciever = $this->userController->show(['id' => $t["reciever_id"]]);
+                
+                $t['sender_name'] = $sender['name'];
+                $t['sender_email'] = $sender['email'];
+                $t['reciever_name'] = $reciever['name'];
+                $t['reciever_email'] = $reciever['email'];
+                
+                $transactions[] = $t;
+            }
         } else {
-            $query = "select * from transactionsinner join users on transactions.sender_id = users.id or transactions.reciever_id = users.id";
-            $users = $this->db->getAll($query);
+            $query = "select transactions.id as id, transactions.amount as amount, transactions.category as category, transactions.created_at as created_at, transactions.sender_id as sender_id, transactions.reciever_id as reciever_id from transactions inner join users on transactions.sender_id = users.id or transactions.reciever_id = users.id";
+            
+            $result = $this->db->getAll($query);
+            
+            foreach($result as $t) {
+                $query = "select users.name as sender_name, users.email as sender_email from users where id = :sender_id";
+                $sender = $this->db->getOne($query, ['sender_id' => $t['sender_id']]);
+                $query = "select users.name as reciever_name, users.email as reciever_email from users where id = :reciever_id";
+                $reciever = $this->db->getOne($query, ['reciever_id' => $t['reciever_id']]);
+                
+                $t['sender_name'] = $sender['sender_name'];
+                $t['sender_email'] = $sender['sender_email'];
+                $t['reciever_name'] = $reciever['reciever_name'];
+                $t['reciever_email'] = $reciever['reciever_email'];
+
+                $transactions[] = $t;
+            }
         }
 
-        return $users;
+        return $transactions;
     }
 
     public function show(array $request)
     {
         $transactions = [];
         if (Session::get('driver') === 'file') {
-            $transactions = $this->index();
-
-            $transactions = array_filter($transactions, function ($transaction) use($request){
-                if ($request['id'] === $transaction->sender_id or $request['id'] === $transaction->reciever_id) {
-                    $transaction->user = $this->userController->show(['id' => $request["id"]]);
-                    return true;
+            $transactionsData = $this->index();
+            
+            foreach($transactionsData as $t) {
+                $sender = [];
+                $reciever = [];
+                if ($request['sender_id'] == $t['sender_id']) {
+                    $sender = $this->userController->show(['id' => $t["sender_id"]]);
+                    $reciever = $this->userController->show(['id' => $t["reciever_id"]]);
                 }
-            });
+                if ($request['reciever_id'] == $t['reciever_id']) {
+                    $sender = $this->userController->show(['id' => $t["sender_id"]]);
+                    $reciever = $this->userController->show(['id' => $t["reciever_id"]]);
+                }
+        
+                if ($sender and $reciever) {
+                    $transaction = [
+                        'id' => $t['id'],
+                        'sender_id' => $t['sender_id'],
+                        'reciever_id' => $t['reciever_id'],
+                        'amount' => $t['amount'],
+                        'category' => $t['category'],
+                        'created_at' => $t['created_at'],
+                        'sender_name' => $sender['name'],
+                        'sender_email' => $sender['email'],
+                        'reciever_name' => $reciever['name'],
+                        'reciever_email' => $reciever['email'],
+                    ];
+    
+                    $transactions[] = $transaction;
+                }
+
+            }
         } else {
-            $query = "select * from transactions where sender_id = :id or reciever_id = :id inner join users on transactions.sender_id = users.id or transactions.reciever_id = users.id";
-            $transactions = $this->db->getOne($query, $request);
+            $query = "select transactions.id as id, transactions.amount as amount, transactions.category as category, transactions.created_at as created_at, transactions.sender_id as sender_id, transactions.reciever_id as reciever_id from transactions inner join users on transactions.sender_id = users.id or transactions.reciever_id = users.id where transactions.sender_id = :sender_id or transactions.reciever_id = :reciever_id";
+            
+            $result = $this->db->getMany($query, $request);
+            
+            foreach($result as $t) {
+                $query = "select users.name as sender_name, users.email as sender_email from users where id = :sender_id";
+                $sender = $this->db->getOne($query, ['sender_id' => $t['sender_id']]);
+                $query = "select users.name as reciever_name, users.email as reciever_email from users where id = :reciever_id";
+                $reciever = $this->db->getOne($query, ['reciever_id' => $t['reciever_id']]);
+                
+                $t['sender_name'] = $sender['sender_name'];
+                $t['sender_email'] = $sender['sender_email'];
+                $t['reciever_name'] = $reciever['reciever_name'];
+                $t['reciever_email'] = $reciever['reciever_email'];
+
+                $transactions[] = $t;
+            }
         }
         
-        return $transactions;
+        return $transactions ?? [];
     }
 }

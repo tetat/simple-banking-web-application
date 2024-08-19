@@ -13,6 +13,7 @@ class TransactionTable {
             sender_id INT,
             reciever_id INT,
             amount FLOAT(9,2),
+            category ENUM('deposit', 'withdraw', 'transfer') NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (sender_id) REFERENCES users(id),
             FOREIGN KEY (reciever_id) REFERENCES users(id)

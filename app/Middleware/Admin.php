@@ -22,7 +22,6 @@ class Admin
                 ViewPath::HOME
             );
         }
-
         if ($user['role'] !== UserRole::ADMIN) {
             CommonException::throw(
                 [

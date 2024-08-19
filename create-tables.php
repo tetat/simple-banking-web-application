@@ -7,7 +7,7 @@ use Database\UserTable;
 
 require_once __DIR__ . "/vendor/autoload.php";
 
-$db = Connection::create();
+$db = (new Connection())->create();
 
 // create users table
 UserTable::create($db);

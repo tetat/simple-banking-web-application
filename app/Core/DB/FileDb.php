@@ -41,16 +41,16 @@ class FileDb
         foreach($data as $d) {
             $d = (array) $d;
             if (isset($request['id'])) {
-                if ($d['id'] === $request['id']) $oneData = $d;
+                if ($d['id'] == $request['id']) $oneData = $d;
             }
             if (isset($request['email'])) {
                 if ($d['email'] === $request['email']) $oneData = $d;
             }
             if (isset($request['user_id'])) {
-                if ($d['user_id'] === $request['user_id']) $oneData = $d;
+                if ($d['user_id'] == $request['user_id']) $oneData = $d;
             }
         }
-
+        
         return $oneData;
     }
 

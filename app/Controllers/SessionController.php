@@ -17,23 +17,24 @@ class SessionController
 
     public function __construct($db = null)
     {
-        $this->db = $db ?? Connection::create();
+        $database = $db ?? (new Connection())->create();
 
         if (Session::get('driver') === 'file') {
-            $this->db = FileDb::create(Connection::create());
-        } else {
-            $this->db = SqlDb::create(Connection::create($this->db));
+            $this->db = FileDb::create();
+        }
+        if (Session::get('driver') === 'mysql') {
+            $this->db = SqlDb::create($database);
         }
 
-        $this->userController = new UserController($this->db);
+        $this->userController = new UserController($database);
     }
     
     public function create()
     {
         return view("login", [
             'title' => "Login - Bangubank",
-            'errors' => Session::get('errors'),
-            'success' => Session::get('success')
+            'errors' => Session::get('errors', []),
+            'success' => Session::get('success', [])
         ]);
     }
 
@@ -45,10 +46,9 @@ class SessionController
         ]);
 
         $user = $this->userController->show([
+            'id' => 0,
             'email' => $request["email"]
         ]);
-
-        // dd($user);
         
         if ($user['email'] === $request["email"]) {
             if (! password_verify($request["password"], $user['password'])) {
@@ -64,7 +64,7 @@ class SessionController
             )->throw();
         }
 
-        Session::put('user', $user);
+        Session::put('user', (array)$user);
         redirect(ViewPath::HOME);
     }
 
