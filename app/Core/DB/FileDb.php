@@ -54,11 +54,6 @@ class FileDb
         return $oneData;
     }
 
-    public function update(string $storage_path, array $request)
-    {
-        
-    }
-
     public static function create()
     {
         $instance = new static();

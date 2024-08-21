@@ -85,7 +85,7 @@
                           </td>
                           <td
                               class="whitespace-nowrap px-2 py-4 text-sm font-medium text-black-600">
-                              <?= '$' . $t['amount'] ?>
+                              <?= '$' . number_format($t['amount'], 2, '.', ',') ?>
                             </td>
                           <td
                             class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">

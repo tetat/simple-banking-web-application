@@ -81,23 +81,23 @@ use App\Constants\Transaction;
                           <?php if ($t['category'] === Transaction::DEPOSIT): ?>
                             <td
                               class="whitespace-nowrap px-2 py-4 text-sm font-medium text-emerald-600">
-                              <?= '+$' . $t['amount'] ?>
+                              <?= '+$' . number_format($t['amount'], 2, '.', ',') ?>
                             </td>
                           <?php elseif ($t['category'] === Transaction::WITHDRAW): ?>
                             <td
                               class="whitespace-nowrap px-2 py-4 text-sm font-medium text-red-600">
-                              <?= '-$' . $t['amount'] ?>
+                              <?= '-$' . number_format($t['amount'], 2, '.', ',') ?>
                             </td>
                           <?php else: ?>
                             <?php if ($t['sender_id'] === $user['id']): ?>
                               <td
                                 class="whitespace-nowrap px-2 py-4 text-sm font-medium text-red-600">
-                                <?= '-$' . $t['amount'] ?>
+                                <?= '-$' . number_format($t['amount'], 2, '.', ',') ?>
                               </td>
                             <?php else: ?>
                               <td
                                 class="whitespace-nowrap px-2 py-4 text-sm font-medium text-emerald-600">
-                                <?= '+$' . $t['amount'] ?>
+                                <?= '+$' . number_format($t['amount'], 2, '.', ',') ?>
                               </td>
                             <?php endif ?>
                           <?php endif ?>
