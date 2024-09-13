@@ -51,7 +51,7 @@ You can only add an admin with the help of CLI. You need to run `php admin.php` 
 Clone the repository to your local machine:
 
 ```bash
-git git clone -b bank-with-db https://github.com/tetat/simple-banking-web-application.git
+git clone -b bank-with-db https://github.com/tetat/simple-banking-web-application.git
 ```
 
 ### UI Credit
